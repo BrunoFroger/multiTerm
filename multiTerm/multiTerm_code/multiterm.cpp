@@ -547,12 +547,12 @@ void MultiTerm::openListeConnexions(QString fileName){
                 creeConnexion();
                 listeConnexions[indexNewConnexion] = connexionCourante;
                 //connexionCourante->setIdConnexion(indexNewConnexion);
-                connexionCourante->setVar("idConnexion", QString::number(indexNewConnexion))
+                connexionCourante->setVar("idConnexion", QString::number(indexNewConnexion));
                 indexNewConnexion++;
                 listeConnexions[indexNewConnexion] = nullptr;       // on reset la connexion suivante
-                connexionCourante->setLevel(niveauArbre);
-                connexionCourante->setTypeItem(TYPE_GROUPE_CONNEXION);
-                connexionCourante->setGroupeConnexionName (varValue);
+                connexionCourante->setVar("level", niveauArbre);
+                connexionCourante->setVar("typeItem", TYPE_GROUPE_CONNEXION);
+                connexionCourante->setVar("groupeConnexionName", varValue);
                 typeData=1;
                 break;
             } else if (varName.compare("connexion") == 0){
@@ -568,7 +568,7 @@ void MultiTerm::openListeConnexions(QString fileName){
                 //connexionCourante->setLevel(niveauArbre);
                 connexionCourante->setVar("level", niveauArbre);
                 //connexionCourante->setTypeItem(TYPE_CONNEXION);
-                connexionCourante->setVar("typeConnexion", TYPE_CONNEXION);
+                connexionCourante->setVar("typeItem", TYPE_CONNEXION);
                 //connexionCourante->setPort(0);
                 connexionCourante->setVar("port", 0);
                 QString tmp = QString::number(indexNewConnexion-1);
@@ -893,7 +893,7 @@ void MultiTerm::newConnexion(){
     connexionCourante->setVar("typeItem", TYPE_CONNEXION);
     indexNewConnexion++;
     modeEdition = MODE_NEW_CONNEXION;
-    editConnexion();
+    connexionCourante->editConnexion(modeEdition);
 
     qDebug() << "MultiTerm::newConnexion : fin";
 }

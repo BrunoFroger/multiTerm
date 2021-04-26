@@ -5,6 +5,7 @@
 #include <QLineEdit>
 #include <QFormLayout>
 #include <QPushButton>
+#include <QCheckBox>
 
 #include "connexion.h"
 
@@ -23,7 +24,7 @@ Connexion::Connexion()
     this->label = "";
     this->nom = "";
     this->adresseIP = "";
-    this->port = 22;
+    this->X11Forwarding = false;
     this->login = "";
     this->passwd = "";
     this->commande = "";
@@ -188,7 +189,11 @@ void Connexion::editConnexion(int mode){
 
     //Connexion connexionToEdit = items[0];
     editWidget = new QWidget();
-    editWidget->setWindowTitle("Edition d'une connexion");
+    if ((mode == MODE_EDIT_CONNEXION) || (mode == MODE_EDIT_GROUPE)){
+        editWidget->setWindowTitle("Edition d'une connexion");
+    } else {
+        editWidget->setWindowTitle("Création d'une connexion");
+    }
     //QVBoxLayout *connexionBox = new QVBoxLayout();
     const char *message = "edition des parametres de la connexion";
 
@@ -212,6 +217,13 @@ void Connexion::editConnexion(int mode){
 
     editPort = new QLineEdit();
     editPort->setText(QString::number(this->port));
+
+    editX11Forwarding = new QCheckBox();
+    if (this->X11Forwarding){
+        editX11Forwarding->setChecked(true);
+    } else {
+        editX11Forwarding->setChecked(false);
+    }
 
     editLogin = new QLineEdit();
     editLogin->setText(this->login);
@@ -252,6 +264,7 @@ void Connexion::editConnexion(int mode){
     layout->addRow(new QLabel(tr("Nom du serveur         :")), editNom);
     layout->addRow(new QLabel(tr("Adresse IP             :")), editAdresseIP);
     layout->addRow(new QLabel(tr("Port                   :")), editPort);
+    layout->addRow(new QLabel(tr("X11 Forwarding         :")), editX11Forwarding);
     layout->addRow(new QLabel(tr("login                  :")), editLogin);
     //layout->addRow(new QLabel(tr("password               :")), editPasswd);
     layout->addRow(new QLabel(tr("commande               :")), editCommande);
@@ -268,9 +281,9 @@ void Connexion::editConnexion(int mode){
     QHBoxLayout *layoutBouttons = new QHBoxLayout;
     QPushButton *boutonSauver;
     if ((mode == MODE_EDIT_CONNEXION) || (mode == MODE_EDIT_GROUPE)){
-        boutonSauver = new QPushButton("Créer");
-    } else {
         boutonSauver = new QPushButton("Sauver");
+    } else {
+        boutonSauver = new QPushButton("Créer");
     }
     layoutBouttons->addWidget(boutonSauver);
     connect(boutonSauver, SIGNAL(clicked()), this, SLOT(saveEditedValues()));
@@ -293,6 +306,7 @@ void Connexion::saveEditedValues(){
 
     this->adresseIP = editAdresseIP->text();
     this->port = editPort->text().toInt();
+    this->X11Forwarding=editX11Forwarding->checkState();
     this->login = editLogin->text();
     //connexionCourante->passwd = editPasswd->text();
     this->commande = editCommande->text();
@@ -373,16 +387,5 @@ void Connexion::displayInfosConnexion(){
         }
     }
     qDebug() <<          "+-------------------------+---------------------------------+";
-}
-
-//--------------------------------------------
-//
-//      MultiTerm::displayListeConnexions
-//
-//--------------------------------------------
-void Connexion::displayListeConnexions(){
-    for (int idx = 0 ; idx < indexNewConnexion ; idx ++){
-        displayInfosConnexion(listeConnexions[idx]);
-    }
 }
 

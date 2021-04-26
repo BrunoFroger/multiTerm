@@ -9,6 +9,7 @@ class QTextEdit;
 class QMessageBox;
 class QLineEdit;
 class QPushButton;
+class QCheckBox;
 QT_END_NAMESPACE
 
 #define TYPE_CONNEXION              1
@@ -47,6 +48,7 @@ private:
     QString nom;
     QString adresseIP;
     int port;
+    bool X11Forwarding;
     QString login;
     QString passwd;
     QString commande;
@@ -66,6 +68,7 @@ private:
     QLineEdit *editNom ;
     QLineEdit *editAdresseIP;
     QLineEdit *editPort;
+    QCheckBox *editX11Forwarding;
     QLineEdit *editLogin;
     QLineEdit *editPasswd;
     QLineEdit *editCommande;

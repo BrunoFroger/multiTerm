@@ -246,6 +246,7 @@ void Connexion::editConnexion(int mode){
     editCommande->setText(this->commande);
 
     editAvecTunnel = new QCheckBox();
+    connect(editAvecTunnel, SIGNAL(clicked()), this, SLOT(refeshEditWidget()));
     if (this->avecTunnel){
         editAvecTunnel->setChecked(true);
     } else {
@@ -338,6 +339,23 @@ void Connexion::saveEditedValues(){
     qDebug() << "Connexion::saveEditedValues : fin";
 }
 
+
+//--------------------------------------------
+//
+//      Connexion::refeshEditWidget
+//
+//--------------------------------------------
+void Connexion::refeshEditWidget(){
+    qDebug() << "Connexion::refeshEditWidget : debut";
+    avecTunnel = !avecTunnel;
+    editWidget->update();
+    if (avecTunnel){
+        qDebug() << "Connexion::refeshEditWidget => avecTunnel = true";
+    } else {
+        qDebug() << "Connexion::refeshEditWidget => avecTunnel = false";
+    }
+    qDebug() << "Connexion::refeshEditWidget : fin";
+}
 
 //--------------------------------------------
 //

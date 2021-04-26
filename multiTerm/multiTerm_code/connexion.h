@@ -41,6 +41,7 @@ public:
 private slots:
     void saveEditedValues();
     void abandonEdit();
+    void refeshEditWidget();
 
 private:
     // variables de definition d'une connexion

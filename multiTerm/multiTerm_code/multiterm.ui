@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MultiTerm</class>
+ <widget class="QMainWindow" name="MultiTerm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MultiTerm</string>
+  </property>
+  <widget class="QWidget" name="widgePrincipal">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QTreeView" name="ArbreDesConnnexionsDisponibles"/>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="LayoutGlobal">
+      <item>
+       <layout class="QVBoxLayout" name="LayoutConnexionsActives">
+        <item>
+         <widget class="QTabWidget" name="ongletsConnexionsActives">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <property name="documentMode">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="tab">
+           <attribute name="title">
+            <string>Tab 1</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_2">
+           <attribute name="title">
+            <string>Tab 2</string>
+           </attribute>
+          </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="ConnexionVisualisee"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionMultiTermAPropos">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>A propos</string>
+   </property>
+  </action>
+  <action name="actionMultiTermQuitter">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Quitter MultiTerm</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionFichierOuvrir">
+   <property name="text">
+    <string>Ouvrir</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionFichierSauvegarder">
+   <property name="text">
+    <string>Enregistrer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionFichierSauvegarder_sous">
+   <property name="text">
+    <string>Enregistrer sous</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionFichierNouvelleGrilleGrilleFacile">
+   <property name="text">
+    <string>Facile</string>
+   </property>
+  </action>
+  <action name="actionFichierNouvelleGrilleGrilleMoyenne">
+   <property name="text">
+    <string>Moyenne</string>
+   </property>
+  </action>
+  <action name="actionFichierNouvelleGrilleGrilleDifficile">
+   <property name="text">
+    <string>Difficile</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

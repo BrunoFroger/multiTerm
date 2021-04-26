@@ -1,0 +1,64 @@
+{ groupeConnexion = mode intranet
+	{ groupeConnexion = serveurs internes orange
+		{ groupeConnexion = softnet
+			{ connexion = ssh server docker
+				commentaire = 
+				nom = docker
+				adresseIP = 10.194.124.236
+				port = 22
+				login = james
+			}
+			{ connexion = ssh server sim
+				commentaire = 
+				nom = sim
+				adresseIP = 10.194.128.254
+				port = 22
+				login = ftrd
+			}
+		}
+		{ groupeConnexion = serveurs projets
+			{ groupeConnexion = OINIS Open SBC
+				{ connexion = ssh test kamalio
+					nom = kamalio
+					adresseIP = 172.20.3.33
+					port = 22
+					login = ubuntu
+				}
+				{ connexion = ssh MTS
+					nom = MTS
+					adresseIP = 172.20.3.19
+					port = 22
+					login = ubuntu
+				}
+			}
+		}
+	}
+	{ groupeConnexion = serveurs externes
+		{ groupeConnexion = serveurs maison
+		}
+	}
+}
+{ groupeConnexion = mode internet
+	{ groupeConnexion = serveurs de la maison
+		{ connexion = ssh server web
+			commentaire = serveur web popote
+			nom = srvweb
+			adresseIP = livebox3840.ddns.net
+			port = 443
+			login = bruno
+		}
+	}
+}
+{ groupeConnexion = mode maison
+	{ connexion = ssh server web
+		commentaire = serveur web popote
+		nom = srvweb
+		adresseIP = 192.168.1.39
+		port = 22
+		login = bruno
+		IP rebond = 
+		port rebond = 1111900962
+		login rebond = 
+		port local = 1801675088
+	}
+}

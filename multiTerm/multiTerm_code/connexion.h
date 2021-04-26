@@ -72,7 +72,7 @@ private:
     QLineEdit *editLogin;
     QLineEdit *editPasswd;
     QLineEdit *editCommande;
-    QLineEdit *editAvecTunnel;
+    QCheckBox *editAvecTunnel;
     QLineEdit *editTunnelIP;
     QLineEdit *editTunnelPort;
     QLineEdit *editTunnelLogin;

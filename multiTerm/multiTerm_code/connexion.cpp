@@ -234,8 +234,12 @@ void Connexion::editConnexion(int mode){
     editCommande = new QLineEdit();
     editCommande->setText(this->commande);
 
-    editAvecTunnel = new QLineEdit();
-    editAvecTunnel->setText(QString::number(this->avecTunnel));
+    editAvecTunnel = new QCheckBox();
+    if (this->avecTunnel){
+        editAvecTunnel->setChecked(true);
+    } else {
+        editAvecTunnel->setChecked(false);
+    }
 
     editTunnelIP = new QLineEdit();
     editTunnelIP->setText(this->tunnelIP);
@@ -306,11 +310,11 @@ void Connexion::saveEditedValues(){
 
     this->adresseIP = editAdresseIP->text();
     this->port = editPort->text().toInt();
-    this->X11Forwarding=editX11Forwarding->checkState();
+    this->X11Forwarding=editX11Forwarding->isChecked();
     this->login = editLogin->text();
     //connexionCourante->passwd = editPasswd->text();
     this->commande = editCommande->text();
-    this->avecTunnel=editAvecTunnel->text().toInt();
+    this->avecTunnel=editAvecTunnel->isChecked();
     this->tunnelIP=editTunnelIP->text();
     this->tunnelPort=editTunnelPort->text().toInt();
     this->tunnelLogin=editTunnelLogin->text();

@@ -31,7 +31,7 @@ MultiTerm::MultiTerm() {
     // lecture du fichier de configuration
     //char configFilename[25] = "multiterm.cfg";
     QString configFilename = "multiterm.cfg";
-    QString homeDir = "~";
+    QString homeDir = "~/multiTerm";
     multiTermConfig = new Config(homeDir,configFilename);
 
     for (int i = 0 ; i < 200 ; i++){

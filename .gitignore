@@ -1,0 +1,6 @@
+*.swp
+build-multiTerm-Desktop_Qt_6_0_1_clang_64bit-Debug/
+build-multiTerm-Desktop_Qt_6_0_1_clang_64bit-Release/
+srvweb_*
+srvweb-*
+multiterm/multiTerm/multiTerm_code/multiTerm.pro*

@@ -21,6 +21,7 @@ public:
     QString getHomeDir();
     QString getCnxFileName();
     QString getTerminalAppName();
+    QString getOptionX11Forwarding();
     void editConfig();
 
 private slots:
@@ -38,6 +39,7 @@ private :
     QString cnxFileName;
     QString terminalApp;
     QStringList listTerminalApp;
+    QString optionX11Forwarding;
 
     QWidget *editWidget;
     QWidget *addAppWidget;
@@ -46,6 +48,7 @@ private :
     QLabel *terminalAppLabel;
     QComboBox *listTerminalAppLabel;
     QLineEdit *newAppName;
+    QLineEdit *X11ForwardingLabel;
 
     void analyseConfigFile();
 };

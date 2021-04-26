@@ -14,10 +14,6 @@
 #include "config.h"
 
 
-
-//#include "ui_multiterm.h"
-
-
 //--------------------------------------------
 //
 //      MultiTerm::MultiTerm
@@ -25,13 +21,13 @@
 //--------------------------------------------
 //MultiTerm::MultiTerm(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MultiTerm)
 MultiTerm::MultiTerm() {
-    qDebug() << "MultiTerm::MultiTerm => constructeur debut";
+    //qDebug() << "MultiTerm::MultiTerm => constructeur debut";
 
 
     // lecture du fichier de configuration
     //char configFilename[25] = "multiterm.cfg";
-    QString configFilename = "multiterm.cfg";
-    QString homeDir = "~/multiTerm";
+    QString configFilename = "multiTerm.cfg";
+    QString homeDir = "~";
     multiTermConfig = new Config(homeDir,configFilename);
 
     for (int i = 0 ; i < 200 ; i++){
@@ -49,17 +45,17 @@ MultiTerm::MultiTerm() {
     layoutPrincipal->addLayout(layoutArbreConnexion);
 
 
-    qDebug() << "MultiTerm::MultiTerm => layout cree";
+    //qDebug() << "MultiTerm::MultiTerm => layout cree";
     layoutPrincipal->setMenuBar(menuBar);
-    qDebug() << "MultiTerm::MultiTerm => menuBar ajoute";
+    //qDebug() << "MultiTerm::MultiTerm => menuBar ajoute";
     layoutPrincipal->addWidget(arbreDesConnexions);
-    qDebug() << "MultiTerm::MultiTerm => arbreDesConnexions ajoute";
+    //qDebug() << "MultiTerm::MultiTerm => arbreDesConnexions ajoute";
     //layoutPrincipal->addWidget(editTab);
     //qDebug() << "MultiTerm::MultiTerm => tabConnexions ajoute";
     setLayout(layoutPrincipal);
-    qDebug() << "MultiTerm::MultiTerm => display layout";
+    //qDebug() << "MultiTerm::MultiTerm => display layout";
 
-    qDebug() << "MultiTerm::MultiTerm => constructeur fin";
+    //qDebug() << "MultiTerm::MultiTerm => constructeur fin";
 }
 
 //--------------------------------------------
@@ -68,7 +64,7 @@ MultiTerm::MultiTerm() {
 //
 //--------------------------------------------
 void MultiTerm::updateTitle(QString filename){
-    qDebug() << "MultiTerm::updateTitle => debut";
+    //qDebug() << "MultiTerm::updateTitle => debut";
     QString tmp = appName;
     QStringList pathList = filename.split('/');
     QString fileNameWithoutPath = pathList[pathList.length()-1];
@@ -76,9 +72,9 @@ void MultiTerm::updateTitle(QString filename){
     if (!fileNameWithoutPath.isEmpty()){
         tmp += " (" + fileNameWithoutPath + ")";
     }
-    qDebug() << "MultiTerm::updateTitle => title = " << tmp;
+    //qDebug() << "MultiTerm::updateTitle => title = " << tmp;
     setWindowTitle(tmp);
-    qDebug() << "MultiTerm::updateTitle => fin";
+    //qDebug() << "MultiTerm::updateTitle => fin";
 }
 
 
@@ -89,7 +85,7 @@ void MultiTerm::updateTitle(QString filename){
 //
 //--------------------------------------------
 void MultiTerm::createArbreCnx(){
-    qDebug() << "MultiTerm::createArbreCnx => constructeur debut";
+    //qDebug() << "MultiTerm::createArbreCnx => constructeur debut";
 
     arbreCnxGroupBox = new QGroupBox(tr("liste des connexions"));
 
@@ -108,7 +104,7 @@ void MultiTerm::createArbreCnx(){
 
     //arbreCnxGroupBox->setLayout(layout);
 
-    qDebug() << "MultiTerm::createArbreCnx => constructeur fin";
+    //qDebug() << "MultiTerm::createArbreCnx => constructeur fin";
 }
 
 //--------------------------------------------
@@ -117,12 +113,12 @@ void MultiTerm::createArbreCnx(){
 //
 //--------------------------------------------
 void MultiTerm::createTabCnx(){
-    qDebug() << "MultiTerm::createTabCnx => constructeur debut";
+    //qDebug() << "MultiTerm::createTabCnx => constructeur debut";
 
     tabCnxGroupBox = new QGroupBox(tr("onglets de connexions"));
     tabCnxGroupBox->setTitle("liste des connexions");
 
-    qDebug() << "MultiTerm::createTabCnx => constructeur fin";
+    //qDebug() << "MultiTerm::createTabCnx => constructeur fin";
 }
 
 //--------------------------------------------
@@ -132,7 +128,7 @@ void MultiTerm::createTabCnx(){
 //--------------------------------------------
 void MultiTerm::createActions()
 {
-    qDebug() << "MultiTerm::createActions => debut";
+    //qDebug() << "MultiTerm::createActions => debut";
 
     actionQuitter = new QAction(tr("&Quitter"), this);
     //actionA_propos->setShortcuts(QKeySequence::New);
@@ -207,7 +203,7 @@ void MultiTerm::createActions()
     connect(actionEditConfiguration,SIGNAL(triggered()), this, SLOT(editConfiguration()));
     //qDebug() << "MultiTerm::createActions => editConfiguration OK";
 
-    qDebug() << "MultiTerm::createActions => fin";
+    //qDebug() << "MultiTerm::createActions => fin";
 }
 
 //--------------------------------------------
@@ -217,7 +213,7 @@ void MultiTerm::createActions()
 //--------------------------------------------
 void MultiTerm::createMenus()
 {
-    qDebug() << "MultiTerm::createMenus => debut";
+    //qDebug() << "MultiTerm::createMenus => debut";
     menuBar = new QMenuBar;
 
     //menuFichier->addSeparator();
@@ -242,7 +238,7 @@ void MultiTerm::createMenus()
     //qDebug() << "MultiTerm::createMenus => menuAide addAction actionAPropos OK";
     //qDebug() << "MultiTerm::createMenus => menuAide OK";
 
-    qDebug() << "MultiTerm::createMenus => fin";
+    //qDebug() << "MultiTerm::createMenus => fin";
 }
 
 //--------------------------------------------
@@ -252,14 +248,14 @@ void MultiTerm::createMenus()
 //--------------------------------------------
 void MultiTerm::contextuelMenu(QPoint point) {
 //void MultiTerm::contextuelMenu() {
-    qDebug() << "MultiTerm::contextuelMenu => debut";
+    //qDebug() << "MultiTerm::contextuelMenu => debut";
 
     QMenu menu(this);
     QList<QTreeWidgetItem*> items = arbreDesConnexions->selectedItems();
     QString labelConnexion = items[0]->text(0);
     QModelIndex idConnexion = arbreDesConnexions->indexFromItem(items[0],0);
     qDebug() << "MultiTerm::contextuelMenu => label cliqué " << labelConnexion;
-    qDebug() << "MultiTerm::contextuelMenu => clic en position " << idConnexion;
+    //qDebug() << "MultiTerm::contextuelMenu => clic en position " << idConnexion;
     //connexionCourante = &listeConnexions[idConnexion];
     menu.addAction(actionEditConnexion);
     menu.addAction(actionNewConnexion);
@@ -272,7 +268,7 @@ void MultiTerm::contextuelMenu(QPoint point) {
     QPoint pos = point;
     pos += win->pos();
     menu.exec(pos);
-    qDebug() << "MultiTerm::contextuelMenu => fin";
+    //qDebug() << "MultiTerm::contextuelMenu => fin";
 }
 
 //--------------------------------------------
@@ -326,8 +322,10 @@ void MultiTerm::quitter()
     } else {
         messageBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
     }
-    message += "Voulez vous vraiment quitter : ";
+    message += "Voulez vous vraiment quitter l'application ? ";
     messageBox.setInformativeText(message);
+
+    messageBox.setWindowTitle("Quitter");
 
     int status = messageBox.exec();
 
@@ -434,27 +432,13 @@ void MultiTerm::openListeConnexions(QString fileName){
     indexNewConnexion= 0;
     arbreDesConnexions->clear();
 
-    qDebug() << "MultiTerm::openListeConnexion => debut";
+    //qDebug() << "MultiTerm::openListeConnexion => debut";
 
     if (fileName.isEmpty()){
         fileName = multiTermConfig->getHomeDir();
         fileName += "/";
         fileName += multiTermConfig->getCnxFileName();
     }
-
-    /*
-    if (fileName.isEmpty()){
-        //QString directory = "/Users/obfe6300/devBruno/multiTerm/";
-        QString directory = multiTermConfig->getHomeDir();
-        qDebug() << "recherche dans le repertoire " << directory;
-        fileName = QFileDialog::getOpenFileName(this, tr("Ouvrir connexion"), directory, tr("Connexions (*.cnx)"));
-        if (!fileName.isEmpty()){
-            qDebug() << "Ouverture du fichier decrivant les connexions : " << fileName;
-        } else {
-            qDebug() << "abandon d'ouverture de connexion";
-            return;
-        }
-    }*/
 
     QFile fileCnx = QFile(fileName);
     if (!fileCnx.open(QIODevice::ReadOnly | QIODevice::Text)){
@@ -467,7 +451,7 @@ void MultiTerm::openListeConnexions(QString fileName){
     updateTitle(fileName);
     connexionFilename = fileName;
 
-    qDebug() << "traitement des donnnees du fichier " << fileName;
+    //qDebug() << "MultiTerm::openListeConnexions => traitement des donnnees du fichier " << fileName;
     // niveauArbre values entres {}
     // incremente a chaque {
     // decremente a chaque }
@@ -611,7 +595,7 @@ void MultiTerm::openListeConnexions(QString fileName){
     //qDebug() << "MultiTerm::openListeConnexion => affiche liste des connexions";
     //displayListeConnexions();
 
-    qDebug() << "MultiTerm::openListeConnexion => fin";
+    //qDebug() << "MultiTerm::openListeConnexion => fin";
 
 }
 
@@ -725,6 +709,12 @@ void MultiTerm::sauvegardeFichierConnexion(QString fileName){
             ecritLigne("nom = " + connexionCourante->getQStringVar("nom"), level);
             ecritLigne("adresseIP = " + connexionCourante->getQStringVar("adresseIP"),level);
             ecritLigne("port = " + QString::number(connexionCourante->getIntVar("port")),level);
+            if (connexionCourante->getIntVar("X11Forwarding")){
+                ecritLigne("X11Forwarding = true",level);
+            } else {
+                ecritLigne("X11Forwarding = false",level);
+            }
+
             ecritLigne("login = " + connexionCourante->getQStringVar("login"),level);
             //ecritLigne("password = " + connexionCourante->passwd,level);
             if (!connexionCourante->getQStringVar("commande").isEmpty()){
@@ -755,19 +745,8 @@ void MultiTerm::sauvegardeFichierConnexion(QString fileName){
     qDebug() << "fin d'ecriture du fichier";
 
     fileCnx->close();
-    qDebug() << "MultiTerm::sauvegardeFichierConnexion : fin";}
-
-/*
-//--------------------------------------------
-//
-//      MultiTerm::lireConfigFile
-//
-//--------------------------------------------
-void MultiTerm::lireConfigFile(){
-    qDebug() << "MultiTerm::lireConfigFile : debut";
-
-    qDebug() << "MultiTerm::lireConfigFile : fin";
-}*/
+    qDebug() << "MultiTerm::sauvegardeFichierConnexion : fin";
+}
 
 //--------------------------------------------
 //
@@ -775,10 +754,10 @@ void MultiTerm::lireConfigFile(){
 //
 //--------------------------------------------
 void MultiTerm::editItem(int mode){
-    qDebug() << "MultiTerm::editItem => debut";
+    //qDebug() << "MultiTerm::editItem => debut";
     switch (mode){
     case MODE_EDIT_CONNEXION:
-        qDebug() << "MultiTerm::editItem => edition d'une connexion";
+        //qDebug() << "MultiTerm::editItem => edition d'une connexion";
         break;
     case MODE_EDIT_GROUPE:
         qDebug() << "MultiTerm::editItem => edition d'un groupe de connexion";
@@ -803,13 +782,13 @@ void MultiTerm::editItem(int mode){
 
     int index;
     for (index = 0 ; index < 200 ; index++){
-        qDebug() << "test connexion " << index;
+        //qDebug() << "test connexion " << index;
         if (listeConnexions[index] != nullptr) {
             connexionCourante = listeConnexions[index];
             QString tmpLabel = connexionCourante->getQStringVar("label");
-            qDebug() << "connexion " << tmpLabel;
+            //qDebug() << "connexion " << tmpLabel;
             if (tmpLabel == itemText) {
-                qDebug() << "MultiTerm::editConnexion => on a trouve la connexion a editer : " << index;
+                //qDebug() << "MultiTerm::editConnexion => on a trouve la connexion a editer : " << index;
                 break;
             }
         } else {
@@ -825,7 +804,7 @@ void MultiTerm::editItem(int mode){
     connexionCourante->editConnexion(mode);
 
 
-    qDebug() << "MultiTerm::editItem => fin";
+    //qDebug() << "MultiTerm::editItem => fin";
 }
 //--------------------------------------------
 //
@@ -847,11 +826,11 @@ void MultiTerm::newGroupe(){
 //
 //--------------------------------------------
 void MultiTerm::editConnexion(){
-    qDebug() << "MultiTerm::editConnexion : debut";
+    //qDebug() << "MultiTerm::editConnexion : debut";
 
     editItem(MODE_EDIT_CONNEXION);
 
-    qDebug() << "MultiTerm::editConnexion : fin";
+    //qDebug() << "MultiTerm::editConnexion : fin";
 }
 
 //--------------------------------------------
@@ -863,7 +842,7 @@ void MultiTerm::newConnexion(){
     qDebug() << "MultiTerm::newConnexion : debut";
     QList<QTreeWidgetItem*> items = arbreDesConnexions->selectedItems();
     QString itemText = items[0]->text(0);
-    qDebug() << "MultiTerm::lanceConnexion => itemText = " << itemText;
+    qDebug() << "MultiTerm::newConnexion => itemText = " << itemText;
 
     int index;
     for (index = 0 ; index < 200 ; index++){
@@ -871,7 +850,7 @@ void MultiTerm::newConnexion(){
             connexionCourante = listeConnexions[index];
             qDebug() << "connexion " << connexionCourante->getQStringVar("label");
             if (connexionCourante->getQStringVar("label") == itemText) {
-                qDebug() << "MultiTerm::lanceConnexion => on a trouve la connexion a editer : " << index;
+                qDebug() << "MultiTerm::newConnexion => on a trouve la connexion a creer : " << index;
                 break;
             }
         } else {
@@ -880,7 +859,7 @@ void MultiTerm::newConnexion(){
     }
 
     if (index >= 200){
-        qDebug() << "MultiTerm::lanceConnexion => impossible de trouver cet item a editer";
+        qDebug() << "MultiTerm::newConnexion => impossible de trouver cet item a editer";
         return;
     }
     creeConnexion();
@@ -926,7 +905,7 @@ void MultiTerm::lanceConnexion(){
             connexionCourante = listeConnexions[index];
             qDebug() << "connexion " << connexionCourante->getQStringVar("label");
             if (connexionCourante->getQStringVar("label") == itemText) {
-                qDebug() << "MultiTerm::lanceConnexion => on a trouve la connexion a editer : " << index;
+                //qDebug() << "MultiTerm::lanceConnexion => on a trouve la connexion a lancer : " << index;
                 break;
             }
         } else {
@@ -939,36 +918,7 @@ void MultiTerm::lanceConnexion(){
         return;
     }
 
-    QString cdeTerminal = multiTermConfig->getTerminalAppName();
-    QString cdeSsh = "ssh -Y ";
-    char cde[300];
-    qDebug() << "MultiTerm::lanceConnexion";
-    if (connexionCourante == nullptr){
-        qDebug() << "MultiTerm::lanceConnexion => ERREUR : connexionCourante = nullptr";
-    } else {
-        qDebug() << "on lance la connexion ssh sur " << connexionCourante->getQStringVar("label");
-        QString tmp;
-        tmp += cdeTerminal;
-        tmp += " ";
-        tmp += cdeSsh;
-        tmp += connexionCourante->getQStringVar("login");
-        //tmp += ":";
-        //tmp += connexionCourante->passwd;
-        tmp += "@";
-        tmp += connexionCourante->getQStringVar("adresseIP");
-        tmp += " ";
-        if (! connexionCourante->getQStringVar("commande").isEmpty()){
-            tmp += connexionCourante->getQStringVar("commande");
-        } else {
-            //tmp += cdeTerminal;
-            //tmp += " -e ";
-        }
-        tmp += "&";
-
-        qDebug() << "MultiTerm::lanceConnexion => execution de la commande " << tmp;
-        sprintf(cde, "%s", tmp.toStdString().c_str());
-        system(cde);
-    }
+    connexionCourante->lanceConnexion(multiTermConfig);
 }
 
 //--------------------------------------------

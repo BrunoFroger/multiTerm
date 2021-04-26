@@ -4,6 +4,8 @@
 #include <cstdio>
 #include <iostream>
 
+#include "config.h"
+
 QT_BEGIN_NAMESPACE
 class QTextEdit;
 class QMessageBox;
@@ -24,6 +26,8 @@ QT_END_NAMESPACE
 
 class Connexion: public QDialog
 {
+    Q_OBJECT
+
 public:
     Connexion();
     void setVar(QString varName, QString varValue);
@@ -32,10 +36,11 @@ public:
     int getIntVar(QString varName);
     void editConnexion(int mode);
     void displayInfosConnexion();
+    void lanceConnexion(Config *config);
 
 private slots:
     void saveEditedValues();
-    void abandon();
+    void abandonEdit();
 
 private:
     // variables de definition d'une connexion

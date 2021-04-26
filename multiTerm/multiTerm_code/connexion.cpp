@@ -8,6 +8,7 @@
 #include <QCheckBox>
 
 #include "connexion.h"
+#include "config.h"
 
 //--------------------------------------------
 //
@@ -50,6 +51,8 @@ void Connexion::setVar(QString varName, int varValue){
         this->typeItem = varValue;
     } else if (varName.compare("port") == 0){
         this->port = varValue;
+    } else if (varName.compare("X11Forwarding") == 0){
+        this->X11Forwarding = varValue;
     } else if (varName.compare("avecTunnel") == 0){
         this->avecTunnel = varValue;
     } else if (varName.compare("tunnelPort") == 0){
@@ -88,6 +91,12 @@ void Connexion::setVar(QString varName, QString varValue){
         this->adresseIP = varValue;
     } else if (varName.compare("port") == 0){
         this->port = varValue.toInt();
+    } else if (varName.compare("X11Forwarding") == 0){
+        if (varValue.compare("true") == 0){
+            this->X11Forwarding = true;
+        } else {
+            this->X11Forwarding = false;
+        }
     } else if (varName.compare("login") == 0){
         this->login = varValue;
     } else if (varName.compare("passwd") == 0){
@@ -165,6 +174,8 @@ int Connexion::getIntVar(QString varName){
         return this->typeItem;
     } else if (varName.compare("port") == 0){
         return this->port;
+    } else if (varName.compare("X11Forwarding") == 0){
+        return this->X11Forwarding;
     } else if (varName.compare("avecTunnel") == 0){
         return this->avecTunnel;
     } else if (varName.compare("tunnelPort") == 0){
@@ -283,17 +294,17 @@ void Connexion::editConnexion(int mode){
     layout->addRow(new QLabel(tr("commentaire                :")), editCommentaire);
 
     QHBoxLayout *layoutBouttons = new QHBoxLayout;
-    QPushButton *boutonSauver;
+    QPushButton *boutonEditSauver;
     if ((mode == MODE_EDIT_CONNEXION) || (mode == MODE_EDIT_GROUPE)){
-        boutonSauver = new QPushButton("Sauver");
+        boutonEditSauver = new QPushButton("Sauver", editWidget);
     } else {
-        boutonSauver = new QPushButton("Créer");
+        boutonEditSauver = new QPushButton("Créer");
     }
-    layoutBouttons->addWidget(boutonSauver);
-    connect(boutonSauver, SIGNAL(clicked()), this, SLOT(saveEditedValues()));
-    QPushButton *boutonAbandon = new QPushButton("Abandon");
-    layoutBouttons->addWidget(boutonAbandon);
-    connect(boutonAbandon, SIGNAL(clicked()), this, SLOT(abandon()));
+    layoutBouttons->addWidget(boutonEditSauver);
+    connect(boutonEditSauver, SIGNAL(clicked()), this, SLOT(saveEditedValues()));
+    QPushButton *boutonEditAbandon = new QPushButton("Abandon");
+    layoutBouttons->addWidget(boutonEditAbandon);
+    connect(boutonEditAbandon, SIGNAL(clicked()), this, SLOT(abandonEdit()));
     layout->addRow(layoutBouttons);
 
     editWidget->setLayout(layout);
@@ -306,7 +317,7 @@ void Connexion::editConnexion(int mode){
 //
 //--------------------------------------------
 void Connexion::saveEditedValues(){
-    qDebug() << "MultiTerm::saveEditedValues : debut";
+    qDebug() << "Connexion::saveEditedValues : debut";
 
     this->adresseIP = editAdresseIP->text();
     this->port = editPort->text().toInt();
@@ -324,20 +335,20 @@ void Connexion::saveEditedValues(){
     this->commentaire = editCommentaire->text();
 
     editWidget->close();
-    qDebug() << "MultiTerm::saveEditedValues : fin";
+    qDebug() << "Connexion::saveEditedValues : fin";
 }
 
 
 //--------------------------------------------
 //
-//      Connexion::abandon
+//      Connexion::abandonEdit
 //
 //--------------------------------------------
-void Connexion::abandon(){
-    qDebug() << "MultiTerm::abandon : debut";
+void Connexion::abandonEdit(){
+    qDebug() << "Connexion::abandon : debut";
 
     editWidget->close();
-    qDebug() << "MultiTerm::abandon : fin";
+    qDebug() << "Connexion::abandon : fin";
 }
 
 
@@ -369,6 +380,8 @@ void Connexion::displayInfosConnexion(){
         qDebug() << tmp;
         sprintf(tmp,     "| port                    | %30d  |", this->port);
         qDebug() << tmp;
+        sprintf(tmp,     "| X11Forwarding           | %30d  |", this->X11Forwarding);
+        qDebug() << tmp;
         sprintf(tmp,     "| login                   | %30s  |", this->login.toStdString().c_str());
         qDebug() << tmp;
         sprintf(tmp,     "| passwd                  | %30s  |", this->passwd.toStdString().c_str());
@@ -391,5 +404,45 @@ void Connexion::displayInfosConnexion(){
         }
     }
     qDebug() <<          "+-------------------------+---------------------------------+";
+}
+
+//--------------------------------------------
+//
+//      Connexion::lanceConnexion
+//
+//--------------------------------------------
+void Connexion::lanceConnexion(Config *multiTermConfig){
+    QString cdeTerminal = multiTermConfig->getTerminalAppName();
+    QString cdeSsh = "ssh ";
+    char cde[300];
+
+    qDebug() << "Connexion::lanceConnexion";
+    qDebug() << "on lance la connexion ssh sur " << label;
+
+    // test forward X11
+    if (X11Forwarding){
+        cdeSsh += multiTermConfig->getOptionX11Forwarding();
+        cdeSsh += " ";
+    }
+    QString tmp;
+    tmp += cdeTerminal;
+    tmp += " ";
+    tmp += cdeSsh;
+    tmp += login;
+    tmp += "@";
+    tmp += adresseIP;
+    tmp += " ";
+    if (! commande.isEmpty()){
+        tmp += commande;
+    } else {
+        //tmp += cdeTerminal;
+        //tmp += " -e ";
+    }
+    tmp += "&";
+
+    qDebug() << "Connexion::lanceConnexion => execution de la commande " << tmp;
+    sprintf(cde, "%s", tmp.toStdString().c_str());
+    system(cde);
+
 }
 

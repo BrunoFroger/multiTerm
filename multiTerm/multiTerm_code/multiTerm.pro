@@ -30,3 +30,10 @@ TRANSLATIONS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    ../../fichiers config reference/multiTerm.cfg \
+    ../../fichiers config reference/multiTerm.cfg \
+    ../../fichiers config reference/multiTerm.cfg \
+    ../../fichiers config reference/multiTerm.cnx \
+    configuration.txt

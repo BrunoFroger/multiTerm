@@ -41,7 +41,7 @@ public:
 private slots:
     void saveEditedValues();
     void abandonEdit();
-    void refeshEditWidget();
+    void refeshEditWidget(int mode);
 
 private:
     // variables de definition d'une connexion
@@ -85,6 +85,8 @@ private:
     QLineEdit *editTunnelPassword;
     QLineEdit *editTunnelLocalPort;
     QLineEdit *editCommentaire;
+
+    void buildEditLayout(int mode);
 };
 
 #endif // CONNEXION_H

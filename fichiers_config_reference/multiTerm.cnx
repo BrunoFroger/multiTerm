@@ -6,6 +6,7 @@
 				nom = docker
 				adresseIP = 10.194.124.236
 				port = 22
+				X11Forwarding = false
 				login = james
 			}
 			{ connexion = ssh server sim
@@ -13,6 +14,7 @@
 				nom = sim
 				adresseIP = 10.194.128.254
 				port = 22
+				X11Forwarding = false
 				login = ftrd
 			}
 		}
@@ -23,6 +25,7 @@
 					nom = kamalio
 					adresseIP = 172.20.3.33
 					port = 22
+					X11Forwarding = false
 					login = ubuntu
 				}
 				{ connexion = ssh MTS
@@ -30,6 +33,7 @@
 					nom = MTS
 					adresseIP = 172.20.3.19
 					port = 22
+					X11Forwarding = true
 					login = ubuntu
 				}
 			}
@@ -47,6 +51,7 @@
 			nom = srvweb
 			adresseIP = livebox3840.ddns.net
 			port = 443
+			X11Forwarding = false
 			login = bruno
 		}
 	}
@@ -57,6 +62,7 @@
 		nom = srvweb
 		adresseIP = 192.168.1.39
 		port = 22
+		X11Forwarding = true
 		login = bruno
 	}
 }

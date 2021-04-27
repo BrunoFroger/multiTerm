@@ -1,0 +1,7 @@
+description de la gestion des fichiers de configuration
+
+
+multiTerm.cfg
+- lors du premier lancement, ce fichier est cherché dans le repertoire
+d'installation de l'application :
+<path d'installation>/multiTerm.app/Contents/MacOS

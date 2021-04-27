@@ -193,20 +193,19 @@ int Connexion::getIntVar(QString varName){
 
 //--------------------------------------------
 //
-//      Connexion::editConnexion
+//      Connexion::buildEditLayout
 //
 //--------------------------------------------
-void Connexion::editConnexion(int mode){
-
-    //Connexion connexionToEdit = items[0];
-    editWidget = new QWidget();
+void Connexion::buildEditLayout(int mode){
+    qDebug() << "Connexion::buildEditLayout : debut";
+    QString message;
     if ((mode == MODE_EDIT_CONNEXION) || (mode == MODE_EDIT_GROUPE)){
         editWidget->setWindowTitle("Edition d'une connexion");
+        message = "edition des parametres de la connexion";
     } else {
         editWidget->setWindowTitle("Création d'une connexion");
+        message = "création des parametres de la connexion";
     }
-    //QVBoxLayout *connexionBox = new QVBoxLayout();
-    const char *message = "edition des parametres de la connexion";
 
     QLabel *idConnexion = new QLabel();
     idConnexion->setText(QString::number(this->idConnexion));
@@ -273,7 +272,7 @@ void Connexion::editConnexion(int mode){
 
     //QGroupBox *formGroupBox = new QGroupBox(tr("Form layout"));
     QFormLayout *layout = new QFormLayout;
-    layout->addRow(new QLabel(tr(message)));
+    layout->addRow(new QLabel(tr(message.toStdString().c_str())));
     layout->addRow(new QLabel(tr("Id de connexion        :")), idConnexion);
     layout->addRow(new QLabel(tr("Type d'item            :")), itemType);
     layout->addRow(new QLabel(tr("Label de la connexion  :")), label);
@@ -309,7 +308,24 @@ void Connexion::editConnexion(int mode){
     layout->addRow(layoutBouttons);
 
     editWidget->setLayout(layout);
+    qDebug() << "Connexion::buildEditLayout : fin";
+}
+
+//--------------------------------------------
+//
+//      Connexion::editConnexion
+//
+//--------------------------------------------
+void Connexion::editConnexion(int mode){
+    qDebug() << "Connexion::editConnexion : debut";
+
+    //Connexion connexionToEdit = items[0];
+    editWidget = new QWidget();
+
+    buildEditLayout(mode);
+
     editWidget->show();
+    qDebug() << "Connexion::editConnexion : fin";
 }
 
 //--------------------------------------------
@@ -345,9 +361,10 @@ void Connexion::saveEditedValues(){
 //      Connexion::refeshEditWidget
 //
 //--------------------------------------------
-void Connexion::refeshEditWidget(){
+void Connexion::refeshEditWidget(int mode){
     qDebug() << "Connexion::refeshEditWidget : debut";
     avecTunnel = !avecTunnel;
+    buildEditLayout(mode);
     editWidget->update();
     if (avecTunnel){
         qDebug() << "Connexion::refeshEditWidget => avecTunnel = true";

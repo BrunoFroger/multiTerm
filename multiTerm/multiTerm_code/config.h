@@ -31,16 +31,20 @@ private slots:
     void ajoutAppTerminal();
     void ajouterAppterminal();
     void abandonAddApp();
+    void changeDefaultApp();
 
 private :
     QString configFileName;
 
+    // données du fichier de configuration
     QString homeDir;
     QString cnxFileName;
     QString terminalApp;
     QStringList listTerminalApp;
     QString optionX11Forwarding;
+    int defaultTerminalApp;
 
+    // données d'affichage
     QWidget *editWidget;
     QWidget *addAppWidget;
     QLineEdit *homeDirLabel;

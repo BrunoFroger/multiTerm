@@ -112,6 +112,9 @@ void Config::analyseConfigFile(){
             //qDebug() << "listTerminalApp->size() = " << listTerminalApp.size();
             //qDebug() << "listTerminalApp->length() = " << listTerminalApp.length();
             listTerminalApp.append(varValue);
+        } else  if (varName.compare("defaultTerminal") == 0){
+            //qDebug() << "Config::analyseConfigFile  => set defaultTerminal avec " << varValue;
+            this->defaultTerminalApp = varValue.toInt();
         }  else if (varName.compare("optionX11Forwarding") == 0){
             //qDebug() << "Config::analyseConfigFile  => set optionX11Forwarding avec " << varValue;
             this->optionX11Forwarding = varValue;
@@ -220,6 +223,9 @@ void Config::saveEditedValuesConfig(){
         file.write("\n");
         idx++;
     }
+    tmp = "defaultTerminal = " + QString::number(defaultTerminalApp) + "\n";
+    file.write(tmp.toStdString().c_str());
+    file.write("\n");
 
     file.close();
 
@@ -268,6 +274,18 @@ void Config::ajoutAppTerminal()
 
 //--------------------------------------------
 //
+//      Config::changeDefaultApp
+//
+//--------------------------------------------
+void Config::changeDefaultApp(){
+    qDebug() << "Config::changeDefaultApp => debut";
+    defaultTerminalApp = listTerminalAppLabel->currentIndex();
+    qDebug() << "nouvel index = " << QString::number(defaultTerminalApp);
+    qDebug() << "Config::changeDefaultApp => fin";
+}
+
+//--------------------------------------------
+//
 //      Config::editConfig
 //
 //--------------------------------------------
@@ -293,6 +311,7 @@ void Config::editConfig(){
 
     listTerminalAppLabel = new QComboBox();
     listTerminalAppLabel->setEditable(true);
+    connect(listTerminalAppLabel,SIGNAL(currentChangeIndex(int)), this, SLOT(changeDefaultApp()));
     //listTerminalAppLabel->setInsertPolicy(InsertPolicy::InsertAtCurrent);
     qDebug() << "taille de la liste des terminaux " << listTerminalApp.size() ;
     for (int idx = 0 ; idx < listTerminalApp.size() ; idx++){
@@ -300,7 +319,7 @@ void Config::editConfig(){
         listTerminalAppLabel->addItem(listTerminalApp.value(idx));
     }
     qDebug() << "on set la valeur par defaut";
-    listTerminalAppLabel->setCurrentText(terminalApp);
+    listTerminalAppLabel->setCurrentIndex(defaultTerminalApp);
     connect(listTerminalAppLabel, SIGNAL(activated(int)), this, SLOT(onListeAppTerminalActivated(int)));
 
     QPushButton *boutonAjoutApp = new QPushButton("Ajouter app");

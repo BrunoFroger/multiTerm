@@ -80,7 +80,7 @@ void Config::analyseConfigFile(){
     while (!file.atEnd()) {
         QByteArray line = file.readLine();
         QString qLine = QString(line).simplified();
-        //qDebug() << "analyse de la ligne " << indexLigne << " <" << qLine << ">";
+        qDebug() << "analyse de la ligne " << indexLigne << " <" << qLine << ">";
         indexLigne++;
         // test si ligne contient un commentaire
         int index = qLine.indexOf('#');
@@ -100,23 +100,23 @@ void Config::analyseConfigFile(){
         QString varValue = qLine.right(qLine.size() - index - 1).trimmed();
 
         if (varName.compare("homeDir") == 0){
-            //qDebug() << "Config::analyseConfigFile  => set HomeDir avec " << varValue;
+            qDebug() << "Config::analyseConfigFile  => set HomeDir avec " << varValue;
             this->homeDir = varValue;
         } else  if (varName.compare("connexionFile") == 0){
-            //qDebug() << "Config::analyseConfigFile  => set connexionFile avec " << varValue;
+            qDebug() << "Config::analyseConfigFile  => set connexionFile avec " << varValue;
             this->cnxFileName = varValue;
         } else  if (varName.compare("terminal") == 0){
-            //qDebug() << "Config::analyseConfigFile  => set terminal avec " << varValue;
+            qDebug() << "Config::analyseConfigFile  => ajout terminal avec " << varValue;
             this->terminalApp = varValue;
             //qDebug() << "insertion dans la liste des Terminaux possibles";
             //qDebug() << "listTerminalApp->size() = " << listTerminalApp.size();
             //qDebug() << "listTerminalApp->length() = " << listTerminalApp.length();
             listTerminalApp.append(varValue);
         } else  if (varName.compare("defaultTerminal") == 0){
-            //qDebug() << "Config::analyseConfigFile  => set defaultTerminal avec " << varValue;
+            qDebug() << "Config::analyseConfigFile  => set defaultTerminal avec " << varValue;
             this->defaultTerminalApp = varValue.toInt();
         }  else if (varName.compare("optionX11Forwarding") == 0){
-            //qDebug() << "Config::analyseConfigFile  => set optionX11Forwarding avec " << varValue;
+            qDebug() << "Config::analyseConfigFile  => set optionX11Forwarding avec " << varValue;
             this->optionX11Forwarding = varValue;
         }  else {
             QString message = tr("erreur de syntaxe dans le fichier de configuration => ") + tr("nom de variable inconnu : ") + varName;
@@ -239,8 +239,12 @@ void Config::saveEditedValuesConfig(){
 //--------------------------------------------
 void Config::onListeAppTerminalActivated(int index)
 {
+    qDebug() << "Config::onListeAppTerminalActivated => debut";
     terminalApp= listTerminalApp.value(index);
     terminalAppLabel->setText(terminalApp);
+    defaultTerminalApp = index;
+    qDebug() << "nouvel index = " << QString::number(defaultTerminalApp);
+    qDebug() << "Config::onListeAppTerminalActivated => fin";
 }
 
 //--------------------------------------------
@@ -280,6 +284,7 @@ void Config::ajoutAppTerminal()
 void Config::changeDefaultApp(){
     qDebug() << "Config::changeDefaultApp => debut";
     defaultTerminalApp = listTerminalAppLabel->currentIndex();
+    //defaultTerminalApp = index;
     qDebug() << "nouvel index = " << QString::number(defaultTerminalApp);
     qDebug() << "Config::changeDefaultApp => fin";
 }
@@ -311,7 +316,7 @@ void Config::editConfig(){
 
     listTerminalAppLabel = new QComboBox();
     listTerminalAppLabel->setEditable(true);
-    connect(listTerminalAppLabel,SIGNAL(currentChangeIndex(int)), this, SLOT(changeDefaultApp()));
+    //connect(listTerminalAppLabel,SIGNAL(currentChangeIndex(int index)), this, SLOT(changeDefaultApp()));
     //listTerminalAppLabel->setInsertPolicy(InsertPolicy::InsertAtCurrent);
     qDebug() << "taille de la liste des terminaux " << listTerminalApp.size() ;
     for (int idx = 0 ; idx < listTerminalApp.size() ; idx++){

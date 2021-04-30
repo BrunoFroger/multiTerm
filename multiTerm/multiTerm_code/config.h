@@ -31,7 +31,7 @@ private slots:
     void ajoutAppTerminal();
     void ajouterAppterminal();
     void abandonAddApp();
-    void changeDefaultApp();
+    void editValueChanged();
 
 private :
     QString configFileName;
@@ -43,6 +43,7 @@ private :
     QStringList listTerminalApp;
     QString optionX11Forwarding;
     int defaultTerminalApp;
+    bool datasModified;
 
     // données d'affichage
     QWidget *editWidget;

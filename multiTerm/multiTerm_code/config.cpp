@@ -144,8 +144,9 @@ void Config::abandonConfig(){
         message = "Attention les données de configuration n'ont pas été sauvegardées \n";
         messageBox.setStandardButtons(QMessageBox::Cancel | QMessageBox::Save);
 
-        messageBox.setWindowTitle("Quitter");
+        messageBox.setWindowTitle("Configuration non sauvée");
 
+        messageBox.setInformativeText(message);
         int status = messageBox.exec();
         switch(status){
         case QMessageBox::Cancel:
@@ -157,23 +158,6 @@ void Config::abandonConfig(){
         }
 
     }
-
-
-
-    /*
-    if (dataConnexionModifee){
-    } else {
-        messageBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-    }
-    message += "Voulez vous vraiment quitter l'application ? ";
-    messageBox.setInformativeText(message);
-
-
-
-    */
-
-
-
     editWidget->close();
     qDebug() << "Config::abandon : fin";
 }

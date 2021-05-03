@@ -203,6 +203,13 @@ void MultiTerm::createActions()
     connect(actionEditConfiguration,SIGNAL(triggered()), this, SLOT(editConfiguration()));
     //qDebug() << "MultiTerm::createActions => editConfiguration OK";
 
+
+    actionListeConnexions = new QAction(tr("&display liste connexions"), this);
+    //actionA_propos->setShortcuts(QKeySequence::New);
+    actionListeConnexions->setStatusTip(tr("liste connexion"));
+    connect(actionListeConnexions,SIGNAL(triggered()), this, SLOT(displayListeConnexions()));
+    //qDebug() << "MultiTerm::createActions => editConfiguration OK";
+
     //qDebug() << "MultiTerm::createActions => fin";
 }
 
@@ -235,6 +242,7 @@ void MultiTerm::createMenus()
     //qDebug() << "MultiTerm::createMenus => Aide OK";
     menuAide->addAction(actionAPropos);
     menuAide->addAction(actionEditConfiguration);
+    menuAide->addAction(actionListeConnexions);
     //qDebug() << "MultiTerm::createMenus => menuAide addAction actionAPropos OK";
     //qDebug() << "MultiTerm::createMenus => menuAide OK";
 
@@ -252,8 +260,11 @@ void MultiTerm::contextuelMenu(QPoint point) {
 
     QMenu menu(this);
     QList<QTreeWidgetItem*> items = arbreDesConnexions->selectedItems();
+    //int idxConnexion = arbreDesConnexions->indexOfTopLevelItem(items[0]);
+    int idxConnexion = arbreDesConnexions->columnCount();
+    qDebug() << "MultiTerm::contextuelMenu => clic sur l'item N° " << idxConnexion;
     QString labelConnexion = items[0]->text(0);
-    QModelIndex idConnexion = arbreDesConnexions->indexFromItem(items[0],0);
+    //QModelIndex idConnexion = arbreDesConnexions->indexFromItem(items[0],0);
     qDebug() << "MultiTerm::contextuelMenu => label cliqué " << labelConnexion;
     //qDebug() << "MultiTerm::contextuelMenu => clic en position " << idConnexion;
     //connexionCourante = &listeConnexions[idConnexion];
@@ -537,6 +548,10 @@ void MultiTerm::openListeConnexions(QString fileName){
                 connexionCourante->setVar("level", niveauArbre);
                 connexionCourante->setVar("typeItem", TYPE_GROUPE_CONNEXION);
                 connexionCourante->setVar("groupeConnexionName", varValue);
+                QString tmp = QString::number(indexNewConnexion-1);
+                tmp += "->";
+                tmp += varValue;
+                connexionCourante->setVar("label", tmp);
                 typeData=1;
                 break;
             } else if (varName.compare("connexion") == 0){
@@ -545,23 +560,18 @@ void MultiTerm::openListeConnexions(QString fileName){
                 creeConnexion();
                 //qDebug() << "ajout de la connexion " << indexNewConnexion;
                 listeConnexions[indexNewConnexion] = connexionCourante;
-                //connexionCourante->setIdConnexion(indexNewConnexion);
                 connexionCourante->setVar("idConnexion", indexNewConnexion);
+                connexionCourante->setVar("groupeConnexionName", listeConnexions[indexNewConnexion-1]->getQStringVar("groupeConnexionName"));
                 indexNewConnexion++;
                 listeConnexions[indexNewConnexion] = nullptr;       // on reset la connexion suivante     // on reset la connexion suivante
-                //connexionCourante->setLevel(niveauArbre);
                 connexionCourante->setVar("level", niveauArbre);
-                //connexionCourante->setTypeItem(TYPE_CONNEXION);
                 connexionCourante->setVar("typeItem", TYPE_CONNEXION);
-                //connexionCourante->setPort(0);
                 connexionCourante->setVar("port", 0);
                 QString tmp = QString::number(indexNewConnexion-1);
                 tmp += "->";
                 tmp += varValue;
                 connexionCourante->setVar("label", tmp);
-                //itemConnexion->setText(0,varValue);
                 itemConnexion->setText(0,tmp);
-                //itemGroupeConnexion->addChild(itemConnexion);
                 itemGroupeConnexion->addChild(itemConnexion);
                 typeData=2;
             } else {
@@ -686,7 +696,7 @@ void MultiTerm::sauvegardeFichierConnexion(QString fileName){
             ecritLigne("{ groupeConnexion = " + connexionCourante->getQStringVar("groupeConnexionName"), level);
             oldGroupeConnexionName = connexionCourante->getQStringVar("groupeConnexionName");
             level++;
-            qDebug() << "on passe a l'item suivant dans la liste " << index;
+            qDebug() << "Sauvegarde du groupe de connexion " << index << " => " << connexionCourante->getQStringVar("groupeConnexionName");;
             connexionCourante = listeConnexions[index++];
             int newLevel = 1;
             if (connexionCourante != nullptr) {
@@ -729,7 +739,7 @@ void MultiTerm::sauvegardeFichierConnexion(QString fileName){
                 ecritLigne("port local = " + QString::number(connexionCourante->getIntVar("tunnelLocalPort")),level);
             }
             //level--;
-            qDebug() << "on passe a la connexion suivante dans la liste " << index;
+            qDebug() << "Sauvegarde de la connexion " << index << " => " << connexionCourante->getQStringVar("nom");;
             connexionCourante = listeConnexions[index++];
             int newLevel = 1;
             if (connexionCourante != nullptr) {
@@ -754,7 +764,7 @@ void MultiTerm::sauvegardeFichierConnexion(QString fileName){
 //
 //--------------------------------------------
 void MultiTerm::editItem(int mode){
-    //qDebug() << "MultiTerm::editItem => debut";
+    qDebug() << "MultiTerm::editItem => debut";
     switch (mode){
     case MODE_EDIT_CONNEXION:
         //qDebug() << "MultiTerm::editItem => edition d'une connexion";
@@ -774,37 +784,41 @@ void MultiTerm::editItem(int mode){
         qDebug() << "a develloper";
         return;
         break;
+    default:
+        qDebug() << "mode non defini => on quitte la fonction d'edition";
+        return;
     }
 
     QList<QTreeWidgetItem*> items = arbreDesConnexions->selectedItems();
     QString itemText = items[0]->text(0);
-    qDebug() << "MultiTerm::editConnexion => itemText = " << itemText;
+    qDebug() << "MultiTerm::editItem => itemText = " << itemText;
 
     int index;
     for (index = 0 ; index < 200 ; index++){
-        //qDebug() << "test connexion " << index;
+        qDebug() << "MultiTerm::editItem => test connexion " << index;
         if (listeConnexions[index] != nullptr) {
             connexionCourante = listeConnexions[index];
             QString tmpLabel = connexionCourante->getQStringVar("label");
-            //qDebug() << "connexion " << tmpLabel;
+            qDebug() << "MultiTerm::editItem => connexion " << tmpLabel;
             if (tmpLabel == itemText) {
-                //qDebug() << "MultiTerm::editConnexion => on a trouve la connexion a editer : " << index;
+                qDebug() << "MultiTerm::editItem => on a trouve la connexion a editer : " << index;
                 break;
             }
         } else {
+            qDebug() << "MultiTerm::editItem => listeConnexion[index] = nullptr => on quitte la fonction";
             return;     // on a pas trouve la connexion correspondante
         }
     }
 
     if (index >= 200){
-        qDebug() << "impossible de trouver cet item a editer";
+        qDebug() << "MultiTerm::editItem => impossible de trouver cet item a editer";
         return;
     }
 
     connexionCourante->editConnexion(mode);
 
 
-    //qDebug() << "MultiTerm::editItem => fin";
+    qDebug() << "MultiTerm::editItem => fin";
 }
 //--------------------------------------------
 //
@@ -841,6 +855,7 @@ void MultiTerm::editConnexion(){
 void MultiTerm::newConnexion(){
     qDebug() << "MultiTerm::newConnexion : debut";
     QList<QTreeWidgetItem*> items = arbreDesConnexions->selectedItems();
+    int idxArbreCnx = arbreDesConnexions->indexOfTopLevelItem(items[0]);
     QString itemText = items[0]->text(0);
     qDebug() << "MultiTerm::newConnexion => itemText = " << itemText;
 
@@ -862,17 +877,39 @@ void MultiTerm::newConnexion(){
         qDebug() << "MultiTerm::newConnexion => impossible de trouver cet item a editer";
         return;
     }
+
     creeConnexion();
+    qDebug() << "création d'une connexion a l'item " << indexNewConnexion;
+    // insertion de la nouvelle connexion dans la liste des connexions
     for (int i = indexNewConnexion ; i == index ; i--){
         listeConnexions[i] = listeConnexions[i-1];
     }
     listeConnexions[indexNewConnexion]=connexionCourante;
     connexionCourante->setVar("idConnexion", indexNewConnexion);
-    connexionCourante->setVar("level", listeConnexions[indexNewConnexion-1]->getIntVar("level") + 1);
+    connexionCourante->setVar("level", listeConnexions[indexNewConnexion-1]->getIntVar("level"));
     connexionCourante->setVar("typeItem", TYPE_CONNEXION);
-    indexNewConnexion++;
+    connexionCourante->setVar("port", 22);
     modeEdition = MODE_NEW_CONNEXION;
+    listeConnexions[indexNewConnexion-1]->displayInfosConnexion();
+    connexionCourante->displayInfosConnexion();
     connexionCourante->editConnexion(modeEdition);
+
+    //QTreeWidgetItem *itemGroupeConnexion;
+    connexionCourante->setVar("groupeConnexionName",listeConnexions[indexNewConnexion-1]->getQStringVar("groupeConnexionName"));
+    //qsdqs
+    QTreeWidgetItem *itemConnexion;
+    itemConnexion = new QTreeWidgetItem;
+
+    QString tmp = QString::number(indexNewConnexion);
+    tmp += "->";
+    tmp += connexionCourante->getQStringVar("nom");
+    qDebug() << "MultiTerm::newConnexion => nom de la nouvelle connnexion = " << connexionCourante->getQStringVar("nom");
+    connexionCourante->setVar("label", tmp);
+    qDebug() << "MultiTerm::newConnexion => label de la nouvelle connnexion = " << tmp;
+    //itemConnexion->setText(0,varValue);
+    itemConnexion->setText(0,tmp);
+    arbreDesConnexions->insertTopLevelItem(idxArbreCnx,itemConnexion);
+    indexNewConnexion++;
 
     qDebug() << "MultiTerm::newConnexion : fin";
 }

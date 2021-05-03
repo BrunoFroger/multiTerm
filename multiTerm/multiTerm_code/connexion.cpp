@@ -322,10 +322,35 @@ void Connexion::editConnexion(int mode){
     //Connexion connexionToEdit = items[0];
     editWidget = new QWidget();
 
+    this->currentMode = mode;
     buildEditLayout(mode);
 
     editWidget->show();
     qDebug() << "Connexion::editConnexion : fin";
+}
+
+//--------------------------------------------
+//
+//      Connexion::checkIpAdresse
+//
+//--------------------------------------------
+bool Connexion::checkIpAdresse(QString ipAdress){
+    QStringList subIP = ipAdress.split('.');
+    if (subIP.length() != 4){
+        qDebug() << "Connexion::checkIpAdresse => l'adresse IP ne contient pas 4 sous adresses";
+        return false;
+    } else {
+        for (int i = 0 ; i < 4 ; i++){
+            int tmp = subIP[i].toInt();
+            if (tmp < 0 || tmp > 255){
+                qDebug() << "Connexion::checkIpAdresse => l'adresse IP ne contient pas 4 sous adresses";
+                return false;
+            }
+        }
+        return true;
+    }
+    qDebug() << "Connexion::checkIpAdresse => cas non prevu";
+    return false;
 }
 
 //--------------------------------------------
@@ -336,6 +361,15 @@ void Connexion::editConnexion(int mode){
 void Connexion::saveEditedValues(){
     qDebug() << "Connexion::saveEditedValues : debut";
 
+    if (editNom->text().isEmpty()){
+        qDebug() << "Connexion::saveEditedValues => le nom du serveur est vide on revient dans l'edition";
+        return;
+    }
+    this->nom = editNom->text();
+    if (!checkIpAdresse(editAdresseIP->text())){
+        qDebug() << "Connexion::saveEditedValues => l'adresse IP est invalide";
+        return;
+    }
     this->adresseIP = editAdresseIP->text();
     this->port = editPort->text().toInt();
     this->X11Forwarding=editX11Forwarding->isChecked();
@@ -348,10 +382,10 @@ void Connexion::saveEditedValues(){
     this->tunnelLogin=editTunnelLogin->text();
     //connexionCourante->tunnelPassword=editTunnelPassword->text();
     this->tunnelLocalPort=editTunnelLocalPort->text().toInt();
-
     this->commentaire = editCommentaire->text();
 
     editWidget->close();
+    displayInfosConnexion();
     qDebug() << "Connexion::saveEditedValues : fin";
 }
 
@@ -361,10 +395,10 @@ void Connexion::saveEditedValues(){
 //      Connexion::refeshEditWidget
 //
 //--------------------------------------------
-void Connexion::refeshEditWidget(int mode){
+void Connexion::refeshEditWidget(){
     qDebug() << "Connexion::refeshEditWidget : debut";
     avecTunnel = !avecTunnel;
-    buildEditLayout(mode);
+    buildEditLayout(currentMode);
     editWidget->update();
     if (avecTunnel){
         qDebug() << "Connexion::refeshEditWidget => avecTunnel = true";
@@ -401,10 +435,9 @@ void Connexion::displayInfosConnexion(){
     qDebug() << tmp;
     sprintf(tmp,         "| typeItem                | %30d  |", this->typeItem);
     qDebug() << tmp;
-    if (this->typeItem == TYPE_GROUPE_CONNEXION){
-        sprintf(tmp,     "| groupeConnexionName     | %30s  |", this->groupeConnexionName.toStdString().c_str());
-        qDebug() << tmp;
-    } else {
+    sprintf(tmp,     "| groupeConnexionName     | %30s  |", this->groupeConnexionName.toStdString().c_str());
+    qDebug() << tmp;
+    if (this->typeItem != TYPE_GROUPE_CONNEXION){
         sprintf(tmp,     "| commentaire             | %30s  |", this->commentaire.toStdString().c_str());
         qDebug() << tmp;
         sprintf(tmp,     "| label                   | %30s  |", this->label.toStdString().c_str());

@@ -42,6 +42,7 @@ private slots:
     void sauvegarderConnexion();
     void sauvegarderSousConnexion();
     void editConfiguration();
+    void displayListeConnexions();
 
     // fonctions du menu contextuel Connexion
     void contextuelMenu(QPoint);
@@ -82,7 +83,6 @@ private:
     void sauvegardeFichierConnexion(QString filename);
     void ecritLigne(QString ligne, int nbTab);
     void displayInfosConnexion(Connexion *cnx);
-    void displayListeConnexions();
     void creeConnexion();
     void editItem(int mode);
 
@@ -106,6 +106,8 @@ private:
     QAction *actionOuvrir;
     QAction *actionSauvegarder;
     QAction *actionSauvegarderSous;
+    QAction *actionEditConfiguration;
+    QAction *actionListeConnexions;
     // actions de menu contexttuel
     QAction *actionNewGroupe;
     QAction *actionContextuelMenu;
@@ -113,7 +115,6 @@ private:
     QAction *actionNewConnexion;
     QAction *actionDeleteConnexion;
     QAction *actionLanceConnexion;
-    QAction *actionEditConfiguration;
     QAction *actionEchangeCleSsh;
 
 

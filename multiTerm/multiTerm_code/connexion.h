@@ -41,7 +41,7 @@ public:
 private slots:
     void saveEditedValues();
     void abandonEdit();
-    void refeshEditWidget(int mode);
+    void refeshEditWidget();
 
 private:
     // variables de definition d'une connexion
@@ -68,6 +68,7 @@ private:
 
     // variables de fonctionnement
     QWidget *editWidget;
+    int currentMode;
 
     // zone de texte de la fenetre d'edition
     QLineEdit *editGroupeConnexionName;
@@ -87,6 +88,7 @@ private:
     QLineEdit *editCommentaire;
 
     void buildEditLayout(int mode);
+    bool checkIpAdresse(QString ipAdress);
 };
 
 #endif // CONNEXION_H

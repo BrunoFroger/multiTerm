@@ -321,6 +321,7 @@ void Connexion::editConnexion(int mode){
 
     //Connexion connexionToEdit = items[0];
     editWidget = new QWidget();
+    //editWidget->setModal(true);
 
     this->currentMode = mode;
     buildEditLayout(mode);
@@ -386,6 +387,7 @@ void Connexion::saveEditedValues(){
 
     editWidget->close();
     displayInfosConnexion();
+
     qDebug() << "Connexion::saveEditedValues : fin";
 }
 

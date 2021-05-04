@@ -33,6 +33,7 @@ class MultiTerm : public QDialog
 
 public:
     MultiTerm();
+    void refreshTreeConnexion();
 
 private slots:
     // fonctions lies aux actions de menus

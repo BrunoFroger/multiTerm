@@ -12,6 +12,7 @@
 
 #include "multiterm.h"
 #include "config.h"
+#include "connexion.h"
 
 
 //--------------------------------------------
@@ -261,11 +262,11 @@ void MultiTerm::contextuelMenu(QPoint point) {
     QMenu menu(this);
     QList<QTreeWidgetItem*> items = arbreDesConnexions->selectedItems();
     //int idxConnexion = arbreDesConnexions->indexOfTopLevelItem(items[0]);
-    int idxConnexion = arbreDesConnexions->columnCount();
-    qDebug() << "MultiTerm::contextuelMenu => clic sur l'item N° " << idxConnexion;
+    //int idxConnexion = arbreDesConnexions->columnCount();
+    //qDebug() << "MultiTerm::contextuelMenu => clic sur l'item N° " << idxConnexion;
     QString labelConnexion = items[0]->text(0);
     //QModelIndex idConnexion = arbreDesConnexions->indexFromItem(items[0],0);
-    qDebug() << "MultiTerm::contextuelMenu => label cliqué " << labelConnexion;
+    //qDebug() << "MultiTerm::contextuelMenu => label cliqué " << labelConnexion;
     //qDebug() << "MultiTerm::contextuelMenu => clic en position " << idConnexion;
     //connexionCourante = &listeConnexions[idConnexion];
     menu.addAction(actionEditConnexion);
@@ -347,10 +348,6 @@ void MultiTerm::quitter()
     case QMessageBox::Save:
         sauvegarderConnexion();
         break;
-    }
-
-    if (status == QMessageBox::Ok){
-        _Exit(0);
     }
 }
 
@@ -836,6 +833,20 @@ void MultiTerm::newGroupe(){
 
 //--------------------------------------------
 //
+//      MultiTerm::refreshTreeConnexion
+//
+//--------------------------------------------
+void MultiTerm::refreshTreeConnexion(){
+    //qDebug() << "MultiTerm::refreshTreeConnexion : debut";
+
+    //qDebug() << "MultiTerm::refreshTreeConnexion => ";
+    arbreDesConnexions->update();
+
+    //qDebug() << "MultiTerm::refreshTreeConnexion : fin";
+}
+
+//--------------------------------------------
+//
 //      MultiTerm::editConnexion
 //
 //--------------------------------------------
@@ -843,6 +854,7 @@ void MultiTerm::editConnexion(){
     //qDebug() << "MultiTerm::editConnexion : debut";
 
     editItem(MODE_EDIT_CONNEXION);
+
 
     //qDebug() << "MultiTerm::editConnexion : fin";
 }
@@ -857,15 +869,15 @@ void MultiTerm::newConnexion(){
     QList<QTreeWidgetItem*> items = arbreDesConnexions->selectedItems();
     int idxArbreCnx = arbreDesConnexions->indexOfTopLevelItem(items[0]);
     QString itemText = items[0]->text(0);
-    qDebug() << "MultiTerm::newConnexion => itemText = " << itemText;
+    //qDebug() << "MultiTerm::newConnexion => itemText = " << itemText;
 
     int index;
     for (index = 0 ; index < 200 ; index++){
         if (listeConnexions[index] != nullptr) {
             connexionCourante = listeConnexions[index];
-            qDebug() << "connexion " << connexionCourante->getQStringVar("label");
+            //qDebug() << "MultiTerm::newConnexion => connexion " << connexionCourante->getQStringVar("label");
             if (connexionCourante->getQStringVar("label") == itemText) {
-                qDebug() << "MultiTerm::newConnexion => on a trouve la connexion a creer : " << index;
+                //qDebug() << "MultiTerm::newConnexion => on a trouve la connexion a creer : " << index;
                 break;
             }
         } else {
@@ -879,7 +891,7 @@ void MultiTerm::newConnexion(){
     }
 
     creeConnexion();
-    qDebug() << "création d'une connexion a l'item " << indexNewConnexion;
+    qDebug() << "MultiTerm::newConnexion => création d'une connexion a l'item " << indexNewConnexion;
     // insertion de la nouvelle connexion dans la liste des connexions
     for (int i = indexNewConnexion ; i == index ; i--){
         listeConnexions[i] = listeConnexions[i-1];
@@ -893,10 +905,8 @@ void MultiTerm::newConnexion(){
     listeConnexions[indexNewConnexion-1]->displayInfosConnexion();
     connexionCourante->displayInfosConnexion();
     connexionCourante->editConnexion(modeEdition);
-
-    //QTreeWidgetItem *itemGroupeConnexion;
     connexionCourante->setVar("groupeConnexionName",listeConnexions[indexNewConnexion-1]->getQStringVar("groupeConnexionName"));
-    //qsdqs
+
     QTreeWidgetItem *itemConnexion;
     itemConnexion = new QTreeWidgetItem;
 
@@ -909,6 +919,7 @@ void MultiTerm::newConnexion(){
     //itemConnexion->setText(0,varValue);
     itemConnexion->setText(0,tmp);
     arbreDesConnexions->insertTopLevelItem(idxArbreCnx,itemConnexion);
+    arbreDesConnexions->repaint();
     indexNewConnexion++;
 
     qDebug() << "MultiTerm::newConnexion : fin";

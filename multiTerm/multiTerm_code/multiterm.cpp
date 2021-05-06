@@ -92,6 +92,13 @@ void MultiTerm::createArbreCnx(){
 
     arbreDesConnexions = new QTreeWidget;
     arbreDesConnexions->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    connect(arbreDesConnexions,
+            SIGNAL(itemDoubleClicked(doubleClicConnexion, colonne)),
+            this,
+            SLOT(doubleClicSurConnexion(doubleClicConnexion))
+            );
+    //arbreDesConnexions->itemDoubleClicked()
     connect(arbreDesConnexions,SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextuelMenu(QPoint)));
     //QString homeDir = "/Users/obfe6300/devBruno/multiTerm/";
     //QString homeDir = multiTermConfig->getHomeDir();
@@ -281,6 +288,36 @@ void MultiTerm::contextuelMenu(QPoint point) {
     pos += win->pos();
     menu.exec(pos);
     //qDebug() << "MultiTerm::contextuelMenu => fin";
+}
+
+//--------------------------------------------
+//
+//      MultiTerm::doubleClicSurConnexion
+//
+//--------------------------------------------
+void MultiTerm::doubleClicSurConnexion(QTreeWidgetItem *itemSelected){
+    qDebug() << "MultiTerm::doubleClicSurConnexion => debut";
+    QString itemText = itemSelected->text(0);
+
+
+    int index;
+    for (index = 0 ; index < 200 ; index++){
+        if (listeConnexions[index] != nullptr) {
+            connexionCourante = listeConnexions[index];
+            QString tmpLabel = connexionCourante->getQStringVar("label");
+            qDebug() << "connexion " << tmpLabel;
+            if (tmpLabel == itemText) {
+                qDebug() << "MultiTerm::doubleClicSurConnexion => on a trouve la connexion sur laquelle on a double clique : " << index;
+                break;
+            }
+        } else {
+            return;     // on a pas trouve la connexion correspondante
+        }
+    }
+
+    connexionCourante->lanceConnexion(multiTermConfig);
+
+    qDebug() << "MultiTerm::doubleClicSurConnexion => fin";
 }
 
 //--------------------------------------------

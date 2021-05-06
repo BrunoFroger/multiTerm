@@ -21,6 +21,7 @@ class QMenuBar;
 class QPushButton;
 class QTextEdit;
 class QTreeWidget;
+class QTreeWidgetItem;
 class QContextMenuEvent;
 class QFile;
 QT_END_NAMESPACE
@@ -53,6 +54,7 @@ private slots:
     void deleteConnexion();
     void lanceConnexion();
     void echangeCleSsh();
+    void doubleClicSurConnexion(QTreeWidgetItem *itemSelected);
 
     virtual void closeEvent(QCloseEvent*);
 
@@ -91,6 +93,7 @@ private:
     QGroupBox *arbreCnxGroupBox;
     QGroupBox *tabCnxGroupBox;
     QTreeWidget *arbreDesConnexions;
+    QTreeWidgetItem *doubleClicConnexion;
     //QTabWidget *tabConnexions;
     QTextEdit *editTab;
 

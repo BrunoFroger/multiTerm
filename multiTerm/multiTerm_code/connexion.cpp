@@ -437,12 +437,12 @@ void Connexion::displayInfosConnexion(){
     qDebug() << tmp;
     sprintf(tmp,         "| typeItem                | %30d  |", this->typeItem);
     qDebug() << tmp;
-    sprintf(tmp,     "| groupeConnexionName     | %30s  |", this->groupeConnexionName.toStdString().c_str());
+    sprintf(tmp,         "| groupeConnexionName     | %30s  |", this->groupeConnexionName.toStdString().c_str());
+    qDebug() << tmp;
+    sprintf(tmp,         "| label                   | %30s  |", this->label.toStdString().c_str());
     qDebug() << tmp;
     if (this->typeItem != TYPE_GROUPE_CONNEXION){
         sprintf(tmp,     "| commentaire             | %30s  |", this->commentaire.toStdString().c_str());
-        qDebug() << tmp;
-        sprintf(tmp,     "| label                   | %30s  |", this->label.toStdString().c_str());
         qDebug() << tmp;
         sprintf(tmp,     "| nom                     | %30s  |", this->nom.toStdString().c_str());
         qDebug() << tmp;

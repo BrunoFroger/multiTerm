@@ -54,7 +54,7 @@ private slots:
     void deleteConnexion();
     void lanceConnexion();
     void echangeCleSsh();
-    void doubleClicSurConnexion(QTreeWidgetItem *itemSelected);
+    void doubleClicSurConnexion();
 
     virtual void closeEvent(QCloseEvent*);
 

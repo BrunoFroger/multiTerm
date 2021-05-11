@@ -40,3 +40,7 @@ une connexion est un bloc entre { et } qui décrit l'ensemble des paramètres n�
 Le groupe connexion commence par l'instruction   
 connexion = < nom de la connexion >  
 ensuite haque paramètres est sur une ligne distincte
+
+
+### trello de suivi des developpements
+https://trello.com/b/reJ40MV7

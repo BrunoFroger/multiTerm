@@ -93,11 +93,7 @@ void MultiTerm::createArbreCnx(){
     arbreDesConnexions = new QTreeWidget;
     arbreDesConnexions->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    connect(arbreDesConnexions,
-            SIGNAL(itemDoubleClicked(doubleClicConnexion, colonne)),
-            this,
-            SLOT(doubleClicSurConnexion(doubleClicConnexion))
-            );
+    connect(arbreDesConnexions, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(doubleClicSurConnexion()));
     //arbreDesConnexions->itemDoubleClicked()
     connect(arbreDesConnexions,SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextuelMenu(QPoint)));
     //QString homeDir = "/Users/obfe6300/devBruno/multiTerm/";
@@ -295,9 +291,10 @@ void MultiTerm::contextuelMenu(QPoint point) {
 //      MultiTerm::doubleClicSurConnexion
 //
 //--------------------------------------------
-void MultiTerm::doubleClicSurConnexion(QTreeWidgetItem *itemSelected){
+void MultiTerm::doubleClicSurConnexion(){
     qDebug() << "MultiTerm::doubleClicSurConnexion => debut";
-    QString itemText = itemSelected->text(0);
+    QList<QTreeWidgetItem*> items = arbreDesConnexions->selectedItems();
+    QString itemText = items[0]->text(0);
 
 
     int index;
@@ -906,18 +903,27 @@ void MultiTerm::newConnexion(){
     QList<QTreeWidgetItem*> items = arbreDesConnexions->selectedItems();
     int idxArbreCnx = arbreDesConnexions->indexOfTopLevelItem(items[0]);
     QString itemText = items[0]->text(0);
-    //qDebug() << "MultiTerm::newConnexion => itemText = " << itemText;
+    qDebug() << "MultiTerm::newConnexion => itemText = " << itemText;
 
     int index;
     for (index = 0 ; index < 200 ; index++){
         if (listeConnexions[index] != nullptr) {
             connexionCourante = listeConnexions[index];
-            //qDebug() << "MultiTerm::newConnexion => connexion " << connexionCourante->getQStringVar("label");
-            if (connexionCourante->getQStringVar("label") == itemText) {
-                //qDebug() << "MultiTerm::newConnexion => on a trouve la connexion a creer : " << index;
-                break;
+            if (connexionCourante->getIntVar("typeItem") == 0) {
+                // on a clique sur un groupe de connexion
+                if (connexionCourante->getQStringVar("groupeConnexionName") == itemText){
+                    qDebug() << "MultiTerm::newConnexion => on a trouve la connexion a creer sur tete de groupe : " << index;
+                    break;
+                }
+            } else {
+                //qDebug() << "MultiTerm::newConnexion => connexion " << connexionCourante->getQStringVar("label");
+                if (connexionCourante->getQStringVar("label") == itemText) {
+                    qDebug() << "MultiTerm::newConnexion => on a trouve la connexion a creer apres une connexion : " << index;
+                    break;
+                }
             }
         } else {
+            qDebug() << "MultiTerm::newConnexion => on n'a pas trouve la connexion a creer";
             return;     // on a pas trouve la connexion correspondante
         }
     }
@@ -970,7 +976,43 @@ void MultiTerm::newConnexion(){
 void MultiTerm::deleteConnexion(){
     qDebug() << "MultiTerm::deleteConnexion : debut";
 
+    QList<QTreeWidgetItem*> items = arbreDesConnexions->selectedItems();
+    //int idxArbreCnx = arbreDesConnexions->indexOfTopLevelItem(items[0]);
+    QString itemText = items[0]->text(0);
+    qDebug() << "MultiTerm::deleteConnexion => itemText = " << itemText;
 
+    int index;
+    for (index = 0 ; index < 200 ; index++){
+        if (listeConnexions[index] != nullptr) {
+            connexionCourante = listeConnexions[index];
+            if (connexionCourante->getIntVar("typeItem") == 0) {
+                // on a clique sur un groupe de connexion
+                if (connexionCourante->getQStringVar("groupeConnexionName") == itemText){
+                    qDebug() << "MultiTerm::deleteConnexion => on a trouve le groupe à supprimer : " << index;
+                    break;
+                }
+            } else {
+                if (connexionCourante->getQStringVar("label") == itemText) {
+                    qDebug() << "MultiTerm::deleteConnexion => on a trouve la connexion a supprimer : " << index;
+                    break;
+                }
+            }
+        } else {
+            qDebug() << "MultiTerm::deleteConnexion => on n'a pas trouve la connexion a supprimer";
+            return;     // on a pas trouve la connexion correspondante
+        }
+    }
+
+    qDebug() << "suppression de l'item : " << index;
+
+    int idx = index;
+    while (listeConnexions[idx + 1] != nullptr){
+        listeConnexions[idx] = listeConnexions[idx + 1];
+    }
+    listeConnexions[idx] = nullptr;
+    arbreDesConnexions->removeItemWidget(items[0],0);
+    arbreDesConnexions->repaint();
+    indexNewConnexion--;
     qDebug() << "MultiTerm::deleteConnexion : fin";
 }
 

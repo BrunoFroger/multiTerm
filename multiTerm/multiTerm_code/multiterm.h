@@ -45,6 +45,7 @@ private slots:
     void sauvegarderSousConnexion();
     void editConfiguration();
     void displayListeConnexions();
+    void redrawArbre();
 
     // fonctions du menu contextuel Connexion
     void contextuelMenu(QPoint);
@@ -112,6 +113,7 @@ private:
     QAction *actionSauvegarderSous;
     QAction *actionEditConfiguration;
     QAction *actionListeConnexions;
+    QAction *actionRedrawArbre;
     // actions de menu contexttuel
     QAction *actionNewGroupe;
     QAction *actionContextuelMenu;

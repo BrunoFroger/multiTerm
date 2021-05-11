@@ -484,7 +484,6 @@ void Connexion::displayInfosConnexion(){
 void Connexion::lanceConnexion(Config *multiTermConfig){
     QString cdeTerminal = multiTermConfig->getTerminalAppName();
     QString cdeSsh = "ssh ";
-    char cde[300];
 
     qDebug() << "Connexion::lanceConnexion";
     qDebug() << "on lance la connexion ssh sur " << label;
@@ -511,8 +510,7 @@ void Connexion::lanceConnexion(Config *multiTermConfig){
     tmp += "&";
 
     qDebug() << "Connexion::lanceConnexion => execution de la commande " << tmp;
-    sprintf(cde, "%s", tmp.toStdString().c_str());
-    system(cde);
+    system(tmp.toStdString().c_str());
 
 }
 

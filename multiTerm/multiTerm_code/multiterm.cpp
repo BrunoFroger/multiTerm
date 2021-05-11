@@ -207,12 +207,13 @@ void MultiTerm::createActions()
     connect(actionEditConfiguration,SIGNAL(triggered()), this, SLOT(editConfiguration()));
     //qDebug() << "MultiTerm::createActions => editConfiguration OK";
 
-
     actionListeConnexions = new QAction(tr("&display liste connexions"), this);
-    //actionA_propos->setShortcuts(QKeySequence::New);
     actionListeConnexions->setStatusTip(tr("liste connexion"));
     connect(actionListeConnexions,SIGNAL(triggered()), this, SLOT(displayListeConnexions()));
-    //qDebug() << "MultiTerm::createActions => editConfiguration OK";
+
+    actionRedrawArbre = new QAction(tr("&redraw arbre"), this);
+    actionRedrawArbre->setStatusTip(tr("redessine l'arbre"));
+    connect(actionRedrawArbre,SIGNAL(triggered()), this, SLOT(redrawArbre()));
 
     //qDebug() << "MultiTerm::createActions => fin";
 }
@@ -247,6 +248,7 @@ void MultiTerm::createMenus()
     menuAide->addAction(actionAPropos);
     menuAide->addAction(actionEditConfiguration);
     menuAide->addAction(actionListeConnexions);
+    menuAide->addAction(actionRedrawArbre);
     //qDebug() << "MultiTerm::createMenus => menuAide addAction actionAPropos OK";
     //qDebug() << "MultiTerm::createMenus => menuAide OK";
 
@@ -1057,4 +1059,16 @@ void MultiTerm::displayListeConnexions(){
     for (int idx = 0 ; idx < indexNewConnexion ; idx ++){
         listeConnexions[idx]->displayInfosConnexion();
     }
+}
+
+//--------------------------------------------
+//
+//      MultiTerm::redrawArbre
+//
+//--------------------------------------------
+void MultiTerm::redrawArbre(){
+    qDebug() << "MultiTerm::redrawArbre : debut";
+    //arbreDesConnexions->clear();
+    arbreDesConnexions->repaint();
+    qDebug() << "MultiTerm::redrawArbre : fin";
 }

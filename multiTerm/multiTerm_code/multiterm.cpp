@@ -1070,5 +1070,6 @@ void MultiTerm::redrawArbre(){
     qDebug() << "MultiTerm::redrawArbre : debut";
     //arbreDesConnexions->clear();
     arbreDesConnexions->repaint();
+    arbreDesConnexions->update();
     qDebug() << "MultiTerm::redrawArbre : fin";
 }

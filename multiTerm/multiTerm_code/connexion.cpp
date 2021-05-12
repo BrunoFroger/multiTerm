@@ -35,6 +35,7 @@ Connexion::Connexion()
     this->tunnelLogin = "";
     this->tunnelPassword = "";
     this->tunnelLocalPort = 10022;
+    this->dataUpdated = true;
 }
 
 //--------------------------------------------
@@ -115,6 +116,12 @@ void Connexion::setVar(QString varName, QString varValue){
         this->tunnelPassword = varValue;
     } else if (varName.compare("tunnelLocalPort") == 0){
         this->tunnelLocalPort = varValue.toInt();
+    } else if (varName.compare("dataUpdated") == 0){
+        if (varValue.compare("true") == 0){
+            this->dataUpdated = true;
+        } else {
+            this->dataUpdated = false;
+        }
     } else {
         QString message = tr("erreur de syntaxe dans le fichier de connexion") + tr("nom de variable inconnu : ") + varName;
         QMessageBox::information(NULL,tr("ERREUR"), message);
@@ -182,6 +189,8 @@ int Connexion::getIntVar(QString varName){
         return this->tunnelPort;
     } else if (varName.compare("tunnelLocalPort") == 0){
         return this->tunnelLocalPort;
+    } else if (varName.compare("dataUpdated") == 0){
+        return this->dataUpdated;
     } else {
         QString message = tr("Nom de variable inconnu : ") + varName;
         QMessageBox::information(NULL,tr("ERREUR"), message);
@@ -384,6 +393,7 @@ void Connexion::saveEditedValues(){
     //connexionCourante->tunnelPassword=editTunnelPassword->text();
     this->tunnelLocalPort=editTunnelLocalPort->text().toInt();
     this->commentaire = editCommentaire->text();
+    this->dataUpdated = true;
 
     editWidget->close();
     displayInfosConnexion();
@@ -431,48 +441,30 @@ void Connexion::abandonEdit(){
 void Connexion::displayInfosConnexion(){
     char tmp [100];
     qDebug() <<          "+-------------------------+---------------------------------+";
-    sprintf(tmp,         "| idConnexion             | %30d  |", this->idConnexion);
-    qDebug() << tmp;
-    sprintf(tmp,         "| level                   | %30d  |", this->level);
-    qDebug() << tmp;
-    sprintf(tmp,         "| typeItem                | %30d  |", this->typeItem);
-    qDebug() << tmp;
-    sprintf(tmp,         "| groupeConnexionName     | %30s  |", this->groupeConnexionName.toStdString().c_str());
-    qDebug() << tmp;
-    sprintf(tmp,         "| label                   | %30s  |", this->label.toStdString().c_str());
-    qDebug() << tmp;
+    sprintf(tmp,         "| idConnexion             | %30d  |", this->idConnexion); qDebug() << tmp;
+    sprintf(tmp,         "| level                   | %30d  |", this->level); qDebug() << tmp;
+    sprintf(tmp,         "| typeItem                | %30d  |", this->typeItem); qDebug() << tmp;
+    sprintf(tmp,         "| groupeConnexionName     | %30s  |", this->groupeConnexionName.toStdString().c_str()); qDebug() << tmp;
+    sprintf(tmp,         "| label                   | %30s  |", this->label.toStdString().c_str()); qDebug() << tmp;
     if (this->typeItem != TYPE_GROUPE_CONNEXION){
-        sprintf(tmp,     "| commentaire             | %30s  |", this->commentaire.toStdString().c_str());
-        qDebug() << tmp;
-        sprintf(tmp,     "| nom                     | %30s  |", this->nom.toStdString().c_str());
-        qDebug() << tmp;
-        sprintf(tmp,     "| adresseIP               | %30s  |", this->adresseIP.toStdString().c_str());
-        qDebug() << tmp;
-        sprintf(tmp,     "| port                    | %30d  |", this->port);
-        qDebug() << tmp;
-        sprintf(tmp,     "| X11Forwarding           | %30d  |", this->X11Forwarding);
-        qDebug() << tmp;
-        sprintf(tmp,     "| login                   | %30s  |", this->login.toStdString().c_str());
-        qDebug() << tmp;
-        sprintf(tmp,     "| passwd                  | %30s  |", this->passwd.toStdString().c_str());
-        qDebug() << tmp;
-        sprintf(tmp,     "| commande                | %30s  |", this->commande.toStdString().c_str());
-        qDebug() << tmp;
-        sprintf(tmp,     "| avecTunnel              | %30d  |", this->avecTunnel);
-        qDebug() << tmp;
+        sprintf(tmp,     "| commentaire             | %30s  |", this->commentaire.toStdString().c_str()); qDebug() << tmp;
+        sprintf(tmp,     "| nom                     | %30s  |", this->nom.toStdString().c_str()); qDebug() << tmp;
+        sprintf(tmp,     "| adresseIP               | %30s  |", this->adresseIP.toStdString().c_str()); qDebug() << tmp;
+        sprintf(tmp,     "| port                    | %30d  |", this->port); qDebug() << tmp;
+        sprintf(tmp,     "| X11Forwarding           | %30d  |", this->X11Forwarding); qDebug() << tmp;
+        sprintf(tmp,     "| login                   | %30s  |", this->login.toStdString().c_str()); qDebug() << tmp;
+        sprintf(tmp,     "| passwd                  | %30s  |", this->passwd.toStdString().c_str()); qDebug() << tmp;
+        sprintf(tmp,     "| commande                | %30s  |", this->commande.toStdString().c_str()); qDebug() << tmp;
+        sprintf(tmp,     "| avecTunnel              | %30d  |", this->avecTunnel); qDebug() << tmp;
         if (this->avecTunnel){
-            sprintf(tmp, "| tunnelIP                | %30s  |", this->tunnelIP.toStdString().c_str());
-            qDebug() << tmp;
-            sprintf(tmp, "| tunnelPort              | %30d  |", this->tunnelPort);
-            qDebug() << tmp;
-            sprintf(tmp, "| tunnelLogin             | %30s  |", this->tunnelLogin.toStdString().c_str());
-            qDebug() << tmp;
-            sprintf(tmp, "| tunnelPassword          | %30s  |", this->tunnelPassword.toStdString().c_str());
-            qDebug() << tmp;
-            sprintf(tmp, "| tunnelLocalPort         | %30d  |", this->tunnelLocalPort);
-            qDebug() << tmp;
+            sprintf(tmp, "| tunnelIP                | %30s  |", this->tunnelIP.toStdString().c_str()); qDebug() << tmp;
+            sprintf(tmp, "| tunnelPort              | %30d  |", this->tunnelPort); qDebug() << tmp;
+            sprintf(tmp, "| tunnelLogin             | %30s  |", this->tunnelLogin.toStdString().c_str()); qDebug() << tmp;
+            sprintf(tmp, "| tunnelPassword          | %30s  |", this->tunnelPassword.toStdString().c_str()); qDebug() << tmp;
+            sprintf(tmp, "| tunnelLocalPort         | %30d  |", this->tunnelLocalPort); qDebug() << tmp;
         }
     }
+    sprintf(tmp,     "    | dataUpdated             | %30d  |", this->dataUpdated); qDebug() << tmp;
     qDebug() <<          "+-------------------------+---------------------------------+";
 }
 

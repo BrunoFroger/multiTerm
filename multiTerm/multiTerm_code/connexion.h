@@ -37,6 +37,7 @@ public:
     void editConnexion(int mode);
     void displayInfosConnexion();
     void lanceConnexion(Config *config);
+    bool isModified();
 
 private slots:
     void saveEditedValues();
@@ -65,6 +66,7 @@ private:
     QString tunnelPassword;
     int tunnelLocalPort;
     QTextEdit *cnxEditZone;
+    bool dataUpdated;
 
     // variables de fonctionnement
     QWidget *editWidget;

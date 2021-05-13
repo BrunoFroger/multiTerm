@@ -325,9 +325,23 @@ void MultiTerm::doubleClicSurConnexion(){
 //
 //--------------------------------------------
 void MultiTerm::aPropos(){
+    qDebug() << "MultiTerm::aPropos => debut";
 
-    qDebug() << "MultiTerm::aPropos";
+    QString message;
+    QMessageBox messageBox = QMessageBox(this);
+    messageBox.setStandardButtons(QMessageBox::Ok);
+    message += "MultiTerm\n\n";
+    message += this->description + " \n\n";
+    message += this->version + " \n";
+    message += this->auteur + " \n\n";
+    message += this->anneeVersion + " \n";
+    messageBox.setInformativeText(message);
 
+    messageBox.setWindowTitle("Quitter");
+
+    messageBox.exec();
+
+    qDebug() << "MultiTerm::aPropos => fin";
 }
 
 //--------------------------------------------

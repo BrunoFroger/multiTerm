@@ -63,6 +63,10 @@ private slots:
 private:
     //Ui::MultiTerm *ui;
 
+    QString version = "Version : 1.0";
+    QString description = "MultiTerm est une application permettant d'ouvrir des fenêtres ssh sur des serveurs distants";
+    QString auteur = "Auteur : Bruno Froger";
+    QString anneeVersion = "(c) 2021";
     Config *multiTermConfig;
     // donnees applicatives
     QString appName = "multiTerm";

@@ -205,6 +205,10 @@ void Config::saveEditedValuesConfig(){
 
     cnxFileName = cnxFileNameLabel->text();
     homeDir = homeDirLabel->text();
+    terminalApp = terminalAppLabel->text();
+    optionX11Forwarding = X11ForwardingLabel->text();
+    shellLocal = shellLocalLabel->text();
+
 
     QString fileNameWithPath = configFileName;
     //QString fileNameWithPath = homeDir + "/" + configFileName;
@@ -219,28 +223,38 @@ void Config::saveEditedValuesConfig(){
 
     tmp = "# fichier de configuration multiterm\n";
     file.write(tmp.toStdString().c_str());
+    qDebug() << "ajout de la ligne : " << tmp;
     file.write("\n");
 
     tmp = "# home dir des fichiers de config l'application\n";
     file.write(tmp.toStdString().c_str());
     tmp = "homeDir = " + homeDir + "\n";
     file.write(tmp.toStdString().c_str());
+    qDebug() << "ajout de la ligne : " << tmp;
     file.write("\n");
 
     tmp = "# nom du fichier de description des connexions\n";
     file.write(tmp.toStdString().c_str());
     tmp = "connexionFile = " + cnxFileName + "\n";
     file.write(tmp.toStdString().c_str());
+    qDebug() << "ajout de la ligne : " << tmp;
     file.write("\n");
 
     tmp = "# option de forwarding X11\n";
     file.write(tmp.toStdString().c_str());
     tmp = "optionX11Forwarding = " + optionX11Forwarding + "\n";
     file.write(tmp.toStdString().c_str());
+    qDebug() << "ajout de la ligne : " << tmp;
+    file.write("\n");
+
+    tmp = "shellLocal = " + shellLocal + "\n";
+    file.write(tmp.toStdString().c_str());
+    qDebug() << "ajout de la ligne : " << tmp;
     file.write("\n");
 
     tmp = "# liste des applications terminal disponibles\n";
     file.write(tmp.toStdString().c_str());
+    qDebug() << "ajout de la ligne : " << tmp;
     int idx = 0;
     while (!listTerminalApp.value(idx).isEmpty()){
         tmp = "terminal = " + listTerminalApp[idx];
@@ -251,10 +265,7 @@ void Config::saveEditedValuesConfig(){
     }
     tmp = "defaultTerminal = " + QString::number(defaultTerminalApp) + "\n";
     file.write(tmp.toStdString().c_str());
-    file.write("\n");
-
-    tmp = "shellLocal = " + shellLocal + "\n";
-    file.write(tmp.toStdString().c_str());
+    qDebug() << "ajout de la ligne : " << tmp;
     file.write("\n");
 
     file.close();

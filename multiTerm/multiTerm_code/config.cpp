@@ -36,7 +36,7 @@ QString Config::getHomeDir(){
 
 //--------------------------------------------
 //
-//      Config::getHomeDir
+//      Config::getOptionX11Forwarding
 //
 //--------------------------------------------
 QString Config::getOptionX11Forwarding(){
@@ -59,6 +59,15 @@ QString Config::getCnxFileName(){
 //--------------------------------------------
 QString Config::getTerminalAppName(){
     return terminalApp;
+}
+
+//--------------------------------------------
+//
+//      Config::getShellLocal
+//
+//--------------------------------------------
+QString Config::getShellLocal(){
+    return shellLocal;
 }
 
 //--------------------------------------------
@@ -101,24 +110,18 @@ void Config::analyseConfigFile(){
         QString varValue = qLine.right(qLine.size() - index - 1).trimmed();
 
         if (varName.compare("homeDir") == 0){
-            //qDebug() << "Config::analyseConfigFile  => set HomeDir avec " << varValue;
             this->homeDir = varValue;
         } else  if (varName.compare("connexionFile") == 0){
-            //qDebug() << "Config::analyseConfigFile  => set connexionFile avec " << varValue;
             this->cnxFileName = varValue;
         } else  if (varName.compare("terminal") == 0){
-            //qDebug() << "Config::analyseConfigFile  => ajout terminal avec " << varValue;
             this->terminalApp = varValue;
-            //qDebug() << "insertion dans la liste des Terminaux possibles";
-            //qDebug() << "listTerminalApp->size() = " << listTerminalApp.size();
-            //qDebug() << "listTerminalApp->length() = " << listTerminalApp.length();
             listTerminalApp.append(varValue);
         } else  if (varName.compare("defaultTerminal") == 0){
-            //qDebug() << "Config::analyseConfigFile  => set defaultTerminal avec " << varValue;
             this->defaultTerminalApp = varValue.toInt();
         }  else if (varName.compare("optionX11Forwarding") == 0){
-            //qDebug() << "Config::analyseConfigFile  => set optionX11Forwarding avec " << varValue;
             this->optionX11Forwarding = varValue;
+        }  else if (varName.compare("shellLocal") == 0){
+            this->shellLocal = varValue;
         }  else {
             QString message = tr("erreur de syntaxe dans le fichier de configuration => ") + tr("nom de variable inconnu : ") + varName;
             QMessageBox::information(NULL,tr("ERREUR"), message);
@@ -250,6 +253,10 @@ void Config::saveEditedValuesConfig(){
     file.write(tmp.toStdString().c_str());
     file.write("\n");
 
+    tmp = "shellLocal = " + shellLocal + "\n";
+    file.write(tmp.toStdString().c_str());
+    file.write("\n");
+
     file.close();
     datasModified=false;
 
@@ -339,6 +346,9 @@ void Config::editConfig(){
     X11ForwardingLabel = new QLineEdit();
     X11ForwardingLabel->setText(optionX11Forwarding);
 
+    shellLocalLabel = new QLineEdit();
+    shellLocalLabel->setText(shellLocal);
+
     listTerminalAppLabel = new QComboBox();
     listTerminalAppLabel->setEditable(true);
     qDebug() << "taille de la liste des terminaux " << listTerminalApp.size() ;
@@ -358,6 +368,7 @@ void Config::editConfig(){
     layoutConfig->addRow(new QLabel(tr("Home Dir                        :")), homeDirLabel);
     layoutConfig->addRow(new QLabel(tr("fichier de connexions           :")), cnxFileNameLabel);
     layoutConfig->addRow(new QLabel(tr("option X11Forwarding            :")), X11ForwardingLabel);
+    layoutConfig->addRow(new QLabel(tr("shell local                     :")), shellLocalLabel);
     layoutConfig->addRow(new QLabel(tr("Applications Terminal           :")), listTerminalAppLabel);
 
     QHBoxLayout *layoutBouttons = new QHBoxLayout;

@@ -22,6 +22,7 @@ public:
     QString getCnxFileName();
     QString getTerminalAppName();
     QString getOptionX11Forwarding();
+    QString getShellLocal();
     void editConfig();
 
 private slots:
@@ -44,6 +45,7 @@ private :
     QString optionX11Forwarding;
     int defaultTerminalApp;
     bool datasModified;
+    QString shellLocal;
 
     // données d'affichage
     QWidget *editWidget;
@@ -54,6 +56,7 @@ private :
     QComboBox *listTerminalAppLabel;
     QLineEdit *newAppName;
     QLineEdit *X11ForwardingLabel;
+    QLineEdit *shellLocalLabel;
 
     void analyseConfigFile();
 };

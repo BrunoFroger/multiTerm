@@ -15,6 +15,7 @@
 //
 //--------------------------------------------
 Config::Config(QString homeDir, QString configFileName){
+    qDebug() << "Config::constructeur : debut";
     this->homeDir = homeDir;
     this->configFileName = configFileName;
 
@@ -23,6 +24,7 @@ Config::Config(QString homeDir, QString configFileName){
     optionX11Forwarding = "";
     datasModified=false;
     analyseConfigFile();
+    qDebug() << "Config::constructeur : fin";
 }
 
 //--------------------------------------------
@@ -223,49 +225,49 @@ void Config::saveEditedValuesConfig(){
 
     tmp = "# fichier de configuration multiterm\n";
     file.write(tmp.toStdString().c_str());
-    qDebug() << "ajout de la ligne : " << tmp;
+    //qDebug() << "ajout de la ligne : " << tmp;
     file.write("\n");
 
     tmp = "# home dir des fichiers de config l'application\n";
     file.write(tmp.toStdString().c_str());
     tmp = "homeDir = " + homeDir + "\n";
     file.write(tmp.toStdString().c_str());
-    qDebug() << "ajout de la ligne : " << tmp;
+    //qDebug() << "ajout de la ligne : " << tmp;
     file.write("\n");
 
     tmp = "# nom du fichier de description des connexions\n";
     file.write(tmp.toStdString().c_str());
     tmp = "connexionFile = " + cnxFileName + "\n";
     file.write(tmp.toStdString().c_str());
-    qDebug() << "ajout de la ligne : " << tmp;
+    //qDebug() << "ajout de la ligne : " << tmp;
     file.write("\n");
 
     tmp = "# option de forwarding X11\n";
     file.write(tmp.toStdString().c_str());
     tmp = "optionX11Forwarding = " + optionX11Forwarding + "\n";
     file.write(tmp.toStdString().c_str());
-    qDebug() << "ajout de la ligne : " << tmp;
+    //qDebug() << "ajout de la ligne : " << tmp;
     file.write("\n");
 
     tmp = "shellLocal = " + shellLocal + "\n";
     file.write(tmp.toStdString().c_str());
-    qDebug() << "ajout de la ligne : " << tmp;
+    //qDebug() << "ajout de la ligne : " << tmp;
     file.write("\n");
 
     tmp = "# liste des applications terminal disponibles\n";
     file.write(tmp.toStdString().c_str());
-    qDebug() << "ajout de la ligne : " << tmp;
+    //qDebug() << "ajout de la ligne : " << tmp;
     int idx = 0;
     while (!listTerminalApp.value(idx).isEmpty()){
         tmp = "terminal = " + listTerminalApp[idx];
-        qDebug() << "ajout de la ligne : " << tmp;
+        //qDebug() << "ajout de la ligne : " << tmp;
         file.write(tmp.toStdString().c_str());
         file.write("\n");
         idx++;
     }
     tmp = "defaultTerminal = " + QString::number(defaultTerminalApp) + "\n";
     file.write(tmp.toStdString().c_str());
-    qDebug() << "ajout de la ligne : " << tmp;
+    //qDebug() << "ajout de la ligne : " << tmp;
     file.write("\n");
 
     file.close();
@@ -362,18 +364,18 @@ void Config::editConfig(){
 
     listTerminalAppLabel = new QComboBox();
     listTerminalAppLabel->setEditable(true);
-    qDebug() << "taille de la liste des terminaux " << listTerminalApp.size() ;
+    //qDebug() << "taille de la liste des terminaux " << listTerminalApp.size() ;
     for (int idx = 0 ; idx < listTerminalApp.size() ; idx++){
-        qDebug() << "ajout " << listTerminalApp.value(idx);
+        //qDebug() << "ajout " << listTerminalApp.value(idx);
         listTerminalAppLabel->addItem(listTerminalApp.value(idx));
     }
-    qDebug() << "on set la valeur par defaut";
+    //qDebug() << "on set la valeur par defaut";
     listTerminalAppLabel->setCurrentIndex(defaultTerminalApp);
     connect(listTerminalAppLabel, SIGNAL(activated(int)), this, SLOT(onListeAppTerminalActivated(int)));
 
     QPushButton *boutonAjoutApp = new QPushButton("Ajouter app");
     connect(boutonAjoutApp, SIGNAL(clicked()), this, SLOT(ajoutAppTerminal()));
-    qDebug() << "on remplit le layout";
+    //qDebug() << "on remplit le layout";
     QFormLayout *layoutConfig = new QFormLayout;
     layoutConfig->addRow(new QLabel(tr(message)));
     layoutConfig->addRow(new QLabel(tr("Home Dir                        :")), homeDirLabel);

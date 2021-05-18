@@ -53,6 +53,7 @@ private:
     QString groupeConnexionName;
     QString label;
     QString nom;
+    bool localCnx;
     QString adresseIP;
     int port;
     bool X11Forwarding;
@@ -75,6 +76,7 @@ private:
     // zone de texte de la fenetre d'edition
     QLineEdit *editGroupeConnexionName;
     QLineEdit *editNom ;
+    QCheckBox *editLocalCnx;
     QLineEdit *editAdresseIP;
     QLineEdit *editPort;
     QCheckBox *editX11Forwarding;

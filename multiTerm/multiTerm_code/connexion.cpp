@@ -516,16 +516,18 @@ void Connexion::lanceConnexion(Config *multiTermConfig){
     QString tmp;
     tmp += cdeTerminal;
     tmp += " ";
-    tmp += cdeSsh;
-    tmp += login;
-    tmp += "@";
-    tmp += adresseIP;
-    tmp += " ";
-    if (! commande.isEmpty()){
-        tmp += commande;
-    } else {
-        //tmp += cdeTerminal;
-        //tmp += " -e ";
+    if (!this->localCnx){
+        tmp += cdeSsh;
+        tmp += login;
+        tmp += "@";
+        tmp += adresseIP;
+        tmp += " ";
+        if (! commande.isEmpty()){
+            tmp += commande;
+        } else {
+            //tmp += cdeTerminal;
+            //tmp += " -e ";
+        }
     }
     tmp += "&";
 
